@@ -1,0 +1,1928 @@
+{
+ "_comment": "Fake but representative data used only in discovery role-play. Never imported by development/. Shapes mirror what the live storefront-frontend receives: OrderServices.getAllOrders({day,status,page,startDate,endDate,limit,searchTerm}) -> {orders:[...], totalDoc, methodTotals}. Filtering and paging are SERVER-side live; the mock reproduces the same contract client-side.",
+ "_source": "Ported from storefront-frontend@develop -- src/pages/Orders.jsx (route /orders), TabOrders branch. See discovery/instructions/addendum-002-live-orders-port.md.",
+ "_dateComment": "Order dates are stored as OFFSETS (createdDaysAgo + createdHHMM) and resolved to real dates at load, so the date-range filter and 'today/this week' framing stay meaningful however long after freezing this prototype is opened. Live the API returns absolute ISO dates.",
+ "_statusComment": "Live equivalent: globalSetting.orderWorkflow.statusWorkFlow.ORDER. Drives BOTH the status filter options and the per-row status <select>, whose options are the current status plus its nextStatuses -- a row with no nextStatuses renders a disabled select.",
+ "store": {
+  "name": "QA store"
+ },
+ "user": {
+  "displayName": "Mahesh",
+  "role": "Admin",
+  "image": null
+ },
+ "appProp": {
+  "isStoreQrCode": {
+   "isEnabled": true
+  },
+  "isRouteDeliveryEnabled": true,
+  "currency": "\u20b9",
+  "isAllocationStatusEnabled": false,
+  "canShowInvoiceAction": true,
+  "orderManagementFeatures": {
+   "createDelivery": true,
+   "orderForecast": true,
+   "bulkProxyOrder": true,
+   "demandReport": true,
+   "downloadAllOrders": true,
+   "allocationStatus": true
+  }
+ },
+ "statusWorkflow": [
+  {
+   "status": "PENDING",
+   "nextStatuses": [
+    "PROCESSING",
+    "CANCELLED"
+   ]
+  },
+  {
+   "status": "PROCESSING",
+   "nextStatuses": [
+    "PACKED",
+    "CANCELLED"
+   ]
+  },
+  {
+   "status": "PACKED",
+   "nextStatuses": [
+    "IN_TRANSIT",
+    "CANCELLED"
+   ]
+  },
+  {
+   "status": "IN_TRANSIT",
+   "nextStatuses": [
+    "DELIVERED",
+    "REJECTED"
+   ]
+  },
+  {
+   "status": "DELIVERED",
+   "nextStatuses": []
+  },
+  {
+   "status": "CANCELLED",
+   "nextStatuses": []
+  },
+  {
+   "status": "REJECTED",
+   "nextStatuses": []
+  }
+ ],
+ "locations": {
+  "loc-001": {
+   "name": "Sagar Kirana - Andheri",
+   "contact": "5550401001"
+  },
+  "loc-002": {
+   "name": "Vasant Provisions - Dadar",
+   "contact": "5550401002"
+  },
+  "loc-004": {
+   "name": "Shreeji - Powai",
+   "contact": "5550401004"
+  },
+  "loc-006": {
+   "name": "Ganesh - Thane West",
+   "contact": "5550401006"
+  },
+  "loc-008": {
+   "name": "Laxmi - Bandra",
+   "contact": "5550401008"
+  },
+  "loc-010": {
+   "name": "Bharat Bazaar - Vashi",
+   "contact": "5550401010"
+  },
+  "loc-012": {
+   "name": "Deepak - Kurla",
+   "contact": "5550401012"
+  }
+ },
+ "orders": [
+  {
+   "_id": "ord-001",
+   "invoice": "SO-26001",
+   "createdDaysAgo": 0,
+   "createdHHMM": "0900",
+   "status": "PENDING",
+   "user_info": {
+    "name": "Sagar Kirana Store",
+    "contact": "5550401001"
+   },
+   "buyer_location_id": "loc-001",
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 5,
+     "itemTotal": 160.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 420.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 2550.0
+    }
+   ],
+   "subTotal": 3130.0,
+   "discount": 156.5,
+   "total": 2973.5,
+   "fulfillment": {
+    "dispatches": 0,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 25,
+   "fulfilledPct": 0,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "UNALLOCATED",
+   "allocatedQty": 0
+  },
+  {
+   "_id": "ord-002",
+   "invoice": "SO-26002",
+   "createdDaysAgo": 0,
+   "createdHHMM": "1007",
+   "status": "PENDING",
+   "user_info": {
+    "name": "Vasant Provisions",
+    "contact": "5550401002"
+   },
+   "buyer_location_id": "loc-002",
+   "paymentMethod": "Credit",
+   "cart": [
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 12,
+     "itemTotal": 3720.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 420.0
+    },
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 310.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 1530.0
+    },
+    {
+     "title": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "price": 72.0,
+     "tax": 12,
+     "quantity": 3,
+     "itemTotal": 216.0
+    }
+   ],
+   "subTotal": 6196.0,
+   "discount": 0.0,
+   "total": 6196.0,
+   "fulfillment": {
+    "dispatches": 0,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 33,
+   "fulfilledPct": 0,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "UNALLOCATED",
+   "allocatedQty": 0
+  },
+  {
+   "_id": "ord-003",
+   "invoice": "SO-26003",
+   "createdDaysAgo": 1,
+   "createdHHMM": "1114",
+   "status": "PROCESSING",
+   "user_info": {
+    "name": "Nutan General Stores",
+    "contact": "5550401003"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Red Label Tea 500g",
+     "articleNumber": "FG-1010",
+     "price": 240.0,
+     "tax": 18,
+     "quantity": 20,
+     "itemTotal": 4800.0
+    },
+    {
+     "title": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "price": 22.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 220.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 510.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 84.0
+    }
+   ],
+   "subTotal": 5614.0,
+   "discount": 0.0,
+   "total": 5614.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 34,
+   "fulfilledPct": 75,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 1,
+   "allocationStatus": "PARTIALLY_ALLOCATED",
+   "allocatedQty": 26
+  },
+  {
+   "_id": "ord-004",
+   "invoice": "SO-26004",
+   "createdDaysAgo": 1,
+   "createdHHMM": "1221",
+   "status": "PROCESSING",
+   "user_info": {
+    "name": "Shreeji Supermarket",
+    "contact": "5550401004"
+   },
+   "buyer_location_id": "loc-004",
+   "paymentMethod": "UPI",
+   "cart": [
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 20,
+     "itemTotal": 3100.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 12,
+     "itemTotal": 3720.0
+    },
+    {
+     "title": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "price": 22.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 220.0
+    },
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 12,
+     "itemTotal": 540.0
+    },
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 3,
+     "itemTotal": 96.0
+    },
+    {
+     "title": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "price": 28.5,
+     "tax": 5,
+     "quantity": 20,
+     "itemTotal": 570.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 5,
+     "itemTotal": 1275.0
+    }
+   ],
+   "subTotal": 9521.0,
+   "discount": 0.0,
+   "total": 9521.0,
+   "fulfillment": {
+    "dispatches": 2,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 82,
+   "fulfilledPct": 50,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 1,
+   "allocationStatus": "PARTIALLY_ALLOCATED",
+   "allocatedQty": 41
+  },
+  {
+   "_id": "ord-005",
+   "invoice": "SO-26005",
+   "createdDaysAgo": 2,
+   "createdHHMM": "1328",
+   "status": "PACKED",
+   "user_info": {
+    "name": "Anand Traders",
+    "contact": "5550401005"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "Credit",
+   "cart": [
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 310.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 24,
+     "itemTotal": 7440.0
+    }
+   ],
+   "subTotal": 7750.0,
+   "discount": 0.0,
+   "total": 7750.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 26,
+   "fulfilledPct": 35,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 1,
+   "allocationStatus": "PARTIALLY_ALLOCATED",
+   "allocatedQty": 9
+  },
+  {
+   "_id": "ord-006",
+   "invoice": "SO-26006",
+   "createdDaysAgo": 2,
+   "createdHHMM": "1435",
+   "status": "PACKED",
+   "user_info": {
+    "name": "Ganesh Food Mart",
+    "contact": "5550401006"
+   },
+   "buyer_location_id": "loc-006",
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 930.0
+    },
+    {
+     "title": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "price": 14.0,
+     "tax": 18,
+     "quantity": 2,
+     "itemTotal": 28.0
+    },
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 12,
+     "itemTotal": 540.0
+    },
+    {
+     "title": "Red Label Tea 500g",
+     "articleNumber": "FG-1010",
+     "price": 240.0,
+     "tax": 18,
+     "quantity": 6,
+     "itemTotal": 1440.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 3,
+     "itemTotal": 126.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 3,
+     "itemTotal": 765.0
+    }
+   ],
+   "subTotal": 3829.0,
+   "discount": 191.45,
+   "total": 3637.55,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 32,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 32
+  },
+  {
+   "_id": "ord-007",
+   "invoice": "SO-26007",
+   "createdDaysAgo": 3,
+   "createdHHMM": "1542",
+   "status": "IN_TRANSIT",
+   "user_info": {
+    "name": "Krishna Retail",
+    "contact": "5550401007"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "UPI",
+   "cart": [
+    {
+     "title": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "price": 72.0,
+     "tax": 12,
+     "quantity": 3,
+     "itemTotal": 216.0
+    },
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 24,
+     "itemTotal": 768.0
+    },
+    {
+     "title": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "price": 14.0,
+     "tax": 18,
+     "quantity": 5,
+     "itemTotal": 70.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 20,
+     "itemTotal": 6200.0
+    }
+   ],
+   "subTotal": 7254.0,
+   "discount": 0.0,
+   "total": 7254.0,
+   "fulfillment": {
+    "dispatches": 2,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 52,
+   "fulfilledPct": 75,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 1,
+   "allocationStatus": "PARTIALLY_ALLOCATED",
+   "allocatedQty": 39
+  },
+  {
+   "_id": "ord-008",
+   "invoice": "SO-26008",
+   "createdDaysAgo": 4,
+   "createdHHMM": "1649",
+   "status": "IN_TRANSIT",
+   "user_info": {
+    "name": "Laxmi Departmental",
+    "contact": "5550401008"
+   },
+   "buyer_location_id": "loc-008",
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "price": 28.5,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 285.0
+    },
+    {
+     "title": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "price": 72.0,
+     "tax": 12,
+     "quantity": 3,
+     "itemTotal": 216.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 5,
+     "itemTotal": 1550.0
+    }
+   ],
+   "subTotal": 2051.0,
+   "discount": 0.0,
+   "total": 2051.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 18,
+   "fulfilledPct": 75,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "PARTIALLY_ALLOCATED",
+   "allocatedQty": 14
+  },
+  {
+   "_id": "ord-009",
+   "invoice": "SO-26009",
+   "createdDaysAgo": 5,
+   "createdHHMM": "1756",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Om Sai Provision",
+    "contact": "5550401009"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "Credit",
+   "cart": [
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 930.0
+    },
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 12,
+     "itemTotal": 540.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 84.0
+    },
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 12,
+     "itemTotal": 384.0
+    },
+    {
+     "title": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "price": 28.5,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 171.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 12,
+     "itemTotal": 3720.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 1530.0
+    },
+    {
+     "title": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "price": 14.0,
+     "tax": 18,
+     "quantity": 10,
+     "itemTotal": 140.0
+    }
+   ],
+   "subTotal": 7499.0,
+   "discount": 0.0,
+   "total": 7499.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 66,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 66
+  },
+  {
+   "_id": "ord-010",
+   "invoice": "SO-26010",
+   "createdDaysAgo": 6,
+   "createdHHMM": "0903",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Bharat Bazaar",
+    "contact": "5550401010"
+   },
+   "buyer_location_id": "loc-010",
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "price": 88.0,
+     "tax": 5,
+     "quantity": 5,
+     "itemTotal": 440.0
+    },
+    {
+     "title": "Red Label Tea 500g",
+     "articleNumber": "FG-1010",
+     "price": 240.0,
+     "tax": 18,
+     "quantity": 20,
+     "itemTotal": 4800.0
+    },
+    {
+     "title": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "price": 14.0,
+     "tax": 18,
+     "quantity": 2,
+     "itemTotal": 28.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 12,
+     "itemTotal": 504.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 10,
+     "itemTotal": 3100.0
+    }
+   ],
+   "subTotal": 8872.0,
+   "discount": 0.0,
+   "total": 8872.0,
+   "fulfillment": {
+    "dispatches": 2,
+    "deliveries": 2,
+    "returns": 1
+   },
+   "totalQty": 49,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 12,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 49
+  },
+  {
+   "_id": "ord-011",
+   "invoice": "SO-26011",
+   "createdDaysAgo": 7,
+   "createdHHMM": "1010",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Sunrise Mini Mart",
+    "contact": "5550401011"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "UPI",
+   "cart": [
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 20,
+     "itemTotal": 900.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 420.0
+    }
+   ],
+   "subTotal": 1320.0,
+   "discount": 66.0,
+   "total": 1254.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 30,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 30
+  },
+  {
+   "_id": "ord-012",
+   "invoice": "SO-26012",
+   "createdDaysAgo": 9,
+   "createdHHMM": "1117",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Deepak Stores",
+    "contact": "5550401012"
+   },
+   "buyer_location_id": "loc-012",
+   "paymentMethod": "Credit",
+   "cart": [
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 12,
+     "itemTotal": 540.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 3,
+     "itemTotal": 930.0
+    },
+    {
+     "title": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "price": 22.0,
+     "tax": 5,
+     "quantity": 5,
+     "itemTotal": 110.0
+    },
+    {
+     "title": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "price": 14.0,
+     "tax": 18,
+     "quantity": 10,
+     "itemTotal": 140.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 12,
+     "itemTotal": 3060.0
+    },
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 930.0
+    },
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 3,
+     "itemTotal": 96.0
+    },
+    {
+     "title": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "price": 28.5,
+     "tax": 5,
+     "quantity": 5,
+     "itemTotal": 142.5
+    },
+    {
+     "title": "Red Label Tea 500g",
+     "articleNumber": "FG-1010",
+     "price": 240.0,
+     "tax": 18,
+     "quantity": 24,
+     "itemTotal": 5760.0
+    }
+   ],
+   "subTotal": 11708.5,
+   "discount": 0.0,
+   "total": 11708.5,
+   "fulfillment": {
+    "dispatches": 3,
+    "deliveries": 3,
+    "returns": 2
+   },
+   "totalQty": 80,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 1,
+   "returnRate": 35,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 80
+  },
+  {
+   "_id": "ord-013",
+   "invoice": "SO-26013",
+   "createdDaysAgo": 11,
+   "createdHHMM": "1224",
+   "status": "CANCELLED",
+   "user_info": {
+    "name": "Sagar Kirana Store",
+    "contact": "5550401001"
+   },
+   "buyer_location_id": "loc-001",
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "price": 22.0,
+     "tax": 5,
+     "quantity": 12,
+     "itemTotal": 264.0
+    },
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 930.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 5,
+     "itemTotal": 1275.0
+    }
+   ],
+   "subTotal": 2469.0,
+   "discount": 0.0,
+   "total": 2469.0,
+   "fulfillment": {
+    "dispatches": 0,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 23,
+   "fulfilledPct": 0,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "UNALLOCATED",
+   "allocatedQty": 0
+  },
+  {
+   "_id": "ord-014",
+   "invoice": "SO-26014",
+   "createdDaysAgo": 12,
+   "createdHHMM": "1331",
+   "status": "REJECTED",
+   "user_info": {
+    "name": "Vasant Provisions",
+    "contact": "5550401002"
+   },
+   "buyer_location_id": "loc-002",
+   "paymentMethod": "UPI",
+   "cart": [
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 2550.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 20,
+     "itemTotal": 840.0
+    },
+    {
+     "title": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "price": 88.0,
+     "tax": 5,
+     "quantity": 20,
+     "itemTotal": 1760.0
+    },
+    {
+     "title": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "price": 28.5,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 171.0
+    }
+   ],
+   "subTotal": 5321.0,
+   "discount": 0.0,
+   "total": 5321.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 0,
+    "returns": 1
+   },
+   "totalQty": 56,
+   "fulfilledPct": 40,
+   "dispatchRejected": 2,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 12,
+   "unassignedDispatches": 1,
+   "allocationStatus": "PARTIALLY_ALLOCATED",
+   "allocatedQty": 22
+  },
+  {
+   "_id": "ord-015",
+   "invoice": "SO-26015",
+   "createdDaysAgo": 14,
+   "createdHHMM": "1438",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Nutan General Stores",
+    "contact": "5550401003"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "price": 72.0,
+     "tax": 12,
+     "quantity": 20,
+     "itemTotal": 1440.0
+    },
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 930.0
+    },
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 3,
+     "itemTotal": 96.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 1530.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 24,
+     "itemTotal": 7440.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 20,
+     "itemTotal": 840.0
+    }
+   ],
+   "subTotal": 12276.0,
+   "discount": 0.0,
+   "total": 12276.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 79,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 79
+  },
+  {
+   "_id": "ord-016",
+   "invoice": "SO-26016",
+   "createdDaysAgo": 15,
+   "createdHHMM": "1545",
+   "status": "PROCESSING",
+   "user_info": {
+    "name": "Shreeji Supermarket",
+    "contact": "5550401004"
+   },
+   "buyer_location_id": "loc-004",
+   "paymentMethod": "Credit",
+   "cart": [
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 10,
+     "itemTotal": 450.0
+    }
+   ],
+   "subTotal": 450.0,
+   "discount": 22.5,
+   "total": 427.5,
+   "fulfillment": {
+    "dispatches": 0,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 10,
+   "fulfilledPct": 0,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "UNALLOCATED",
+   "allocatedQty": 0
+  },
+  {
+   "_id": "ord-017",
+   "invoice": "SO-26017",
+   "createdDaysAgo": 17,
+   "createdHHMM": "1652",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Anand Traders",
+    "contact": "5550401005"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "price": 14.0,
+     "tax": 18,
+     "quantity": 3,
+     "itemTotal": 42.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 12,
+     "itemTotal": 3060.0
+    },
+    {
+     "title": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "price": 72.0,
+     "tax": 12,
+     "quantity": 2,
+     "itemTotal": 144.0
+    },
+    {
+     "title": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "price": 22.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 44.0
+    },
+    {
+     "title": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "price": 28.5,
+     "tax": 5,
+     "quantity": 20,
+     "itemTotal": 570.0
+    }
+   ],
+   "subTotal": 3860.0,
+   "discount": 0.0,
+   "total": 3860.0,
+   "fulfillment": {
+    "dispatches": 2,
+    "deliveries": 2,
+    "returns": 0
+   },
+   "totalQty": 39,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 39
+  },
+  {
+   "_id": "ord-018",
+   "invoice": "SO-26018",
+   "createdDaysAgo": 18,
+   "createdHHMM": "1759",
+   "status": "PACKED",
+   "user_info": {
+    "name": "Ganesh Food Mart",
+    "contact": "5550401006"
+   },
+   "buyer_location_id": "loc-006",
+   "paymentMethod": "UPI",
+   "cart": [
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 10,
+     "itemTotal": 450.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 12,
+     "itemTotal": 3060.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 20,
+     "itemTotal": 840.0
+    },
+    {
+     "title": "Red Label Tea 500g",
+     "articleNumber": "FG-1010",
+     "price": 240.0,
+     "tax": 18,
+     "quantity": 3,
+     "itemTotal": 720.0
+    }
+   ],
+   "subTotal": 5070.0,
+   "discount": 0.0,
+   "total": 5070.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 45,
+   "fulfilledPct": 60,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 1,
+   "allocationStatus": "PARTIALLY_ALLOCATED",
+   "allocatedQty": 27
+  },
+  {
+   "_id": "ord-019",
+   "invoice": "SO-26019",
+   "createdDaysAgo": 20,
+   "createdHHMM": "0906",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Krishna Retail",
+    "contact": "5550401007"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "Credit",
+   "cart": [
+    {
+     "title": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "price": 14.0,
+     "tax": 18,
+     "quantity": 6,
+     "itemTotal": 84.0
+    },
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 3,
+     "itemTotal": 135.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 1530.0
+    },
+    {
+     "title": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "price": 22.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 44.0
+    },
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 1550.0
+    },
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 5,
+     "itemTotal": 210.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 3,
+     "itemTotal": 930.0
+    }
+   ],
+   "subTotal": 4483.0,
+   "discount": 0.0,
+   "total": 4483.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 35,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 35
+  },
+  {
+   "_id": "ord-020",
+   "invoice": "SO-26020",
+   "createdDaysAgo": 21,
+   "createdHHMM": "1013",
+   "status": "PENDING",
+   "user_info": {
+    "name": "Laxmi Departmental",
+    "contact": "5550401008"
+   },
+   "buyer_location_id": "loc-008",
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "price": 42.0,
+     "tax": 5,
+     "quantity": 3,
+     "itemTotal": 126.0
+    },
+    {
+     "title": "Red Label Tea 500g",
+     "articleNumber": "FG-1010",
+     "price": 240.0,
+     "tax": 18,
+     "quantity": 6,
+     "itemTotal": 1440.0
+    }
+   ],
+   "subTotal": 1566.0,
+   "discount": 0.0,
+   "total": 1566.0,
+   "fulfillment": {
+    "dispatches": 0,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 9,
+   "fulfilledPct": 0,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "UNALLOCATED",
+   "allocatedQty": 0
+  },
+  {
+   "_id": "ord-021",
+   "invoice": "SO-26021",
+   "createdDaysAgo": 23,
+   "createdHHMM": "1120",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Om Sai Provision",
+    "contact": "5550401009"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "UPI",
+   "cart": [
+    {
+     "title": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "price": 22.0,
+     "tax": 5,
+     "quantity": 10,
+     "itemTotal": 220.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 12,
+     "itemTotal": 3720.0
+    },
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 20,
+     "itemTotal": 900.0
+    },
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 20,
+     "itemTotal": 640.0
+    }
+   ],
+   "subTotal": 5480.0,
+   "discount": 274.0,
+   "total": 5206.0,
+   "fulfillment": {
+    "dispatches": 2,
+    "deliveries": 2,
+    "returns": 1
+   },
+   "totalQty": 62,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 1,
+   "returnsInTransit": 0,
+   "returnRate": 12,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 62
+  },
+  {
+   "_id": "ord-022",
+   "invoice": "SO-26022",
+   "createdDaysAgo": 24,
+   "createdHHMM": "1227",
+   "status": "IN_TRANSIT",
+   "user_info": {
+    "name": "Bharat Bazaar",
+    "contact": "5550401010"
+   },
+   "buyer_location_id": "loc-010",
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Red Label Tea 500g",
+     "articleNumber": "FG-1010",
+     "price": 240.0,
+     "tax": 18,
+     "quantity": 3,
+     "itemTotal": 720.0
+    },
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 64.0
+    },
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 5,
+     "itemTotal": 225.0
+    }
+   ],
+   "subTotal": 1009.0,
+   "discount": 0.0,
+   "total": 1009.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 10,
+   "fulfilledPct": 60,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "PARTIALLY_ALLOCATED",
+   "allocatedQty": 6
+  },
+  {
+   "_id": "ord-023",
+   "invoice": "SO-26023",
+   "createdDaysAgo": 26,
+   "createdHHMM": "1334",
+   "status": "DELIVERED",
+   "user_info": {
+    "name": "Sunrise Mini Mart",
+    "contact": "5550401011"
+   },
+   "buyer_location_id": null,
+   "paymentMethod": "Credit",
+   "cart": [
+    {
+     "title": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "price": 32.0,
+     "tax": 5,
+     "quantity": 24,
+     "itemTotal": 768.0
+    },
+    {
+     "title": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "price": 88.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 528.0
+    },
+    {
+     "title": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "price": 14.0,
+     "tax": 18,
+     "quantity": 2,
+     "itemTotal": 28.0
+    },
+    {
+     "title": "Aashirvaad Atta 5kg",
+     "articleNumber": "FG-1006",
+     "price": 255.0,
+     "tax": 5,
+     "quantity": 2,
+     "itemTotal": 510.0
+    },
+    {
+     "title": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "price": 72.0,
+     "tax": 12,
+     "quantity": 24,
+     "itemTotal": 1728.0
+    },
+    {
+     "title": "Nescafe Classic 100g",
+     "articleNumber": "FG-1011",
+     "price": 310.0,
+     "tax": 18,
+     "quantity": 3,
+     "itemTotal": 930.0
+    }
+   ],
+   "subTotal": 4492.0,
+   "discount": 0.0,
+   "total": 4492.0,
+   "fulfillment": {
+    "dispatches": 1,
+    "deliveries": 1,
+    "returns": 0
+   },
+   "totalQty": 61,
+   "fulfilledPct": 100,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "FULLY_ALLOCATED",
+   "allocatedQty": 61
+  },
+  {
+   "_id": "ord-024",
+   "invoice": "SO-26024",
+   "createdDaysAgo": 28,
+   "createdHHMM": "1441",
+   "status": "CANCELLED",
+   "user_info": {
+    "name": "Deepak Stores",
+    "contact": "5550401012"
+   },
+   "buyer_location_id": "loc-012",
+   "paymentMethod": "COD",
+   "cart": [
+    {
+     "title": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "price": 28.5,
+     "tax": 5,
+     "quantity": 12,
+     "itemTotal": 342.0
+    },
+    {
+     "title": "Fortune Sunflower Oil 1L",
+     "articleNumber": "FG-1008",
+     "price": 155.0,
+     "tax": 5,
+     "quantity": 6,
+     "itemTotal": 930.0
+    },
+    {
+     "title": "Sunfeast Marie Light 250g",
+     "articleNumber": "FG-1005",
+     "price": 45.0,
+     "tax": 18,
+     "quantity": 3,
+     "itemTotal": 135.0
+    },
+    {
+     "title": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "price": 72.0,
+     "tax": 12,
+     "quantity": 24,
+     "itemTotal": 1728.0
+    },
+    {
+     "title": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "price": 88.0,
+     "tax": 5,
+     "quantity": 5,
+     "itemTotal": 440.0
+    }
+   ],
+   "subTotal": 3575.0,
+   "discount": 0.0,
+   "total": 3575.0,
+   "fulfillment": {
+    "dispatches": 0,
+    "deliveries": 0,
+    "returns": 0
+   },
+   "totalQty": 50,
+   "fulfilledPct": 0,
+   "dispatchRejected": 0,
+   "returnsPending": 0,
+   "returnsInTransit": 0,
+   "returnRate": 0,
+   "unassignedDispatches": 0,
+   "allocationStatus": "UNALLOCATED",
+   "allocatedQty": 0
+  }
+ ],
+ "totalDoc": 24,
+ "methodTotals": [
+  {
+   "method": "COD",
+   "total": 41859.05
+  },
+  {
+   "method": "Credit",
+   "total": 42556.0
+  },
+  {
+   "method": "UPI",
+   "total": 28305.0
+  }
+ ],
+ "_menusComment": "Live equivalent: setupData.data.storefrontMenus. `component` is the stable key useMenuLabel() looks up first -- 'orders' resolves to the name below, which is why the page and its copy read 'Sales Orders'. ASSUMPTION: no reference screenshot was supplied for this module, so the tree is carried over from the staff module's screenshot of the same QA store tenant; the tenant's real storefrontMenus is authoritative.",
+ "_submenuOpenComment": "`initiallyOpen` is DISCOVERY-ONLY. SidebarSubMenu.jsx uses useState(true) so live every submenu is expanded on first paint; here all are collapsed since Sales Orders is a top-level entry.",
+ "storefrontMenus": [
+  {
+   "name": "Dashboard",
+   "path": "/dashboard",
+   "component": "dashboard",
+   "icon": "layoutGrid"
+  },
+  {
+   "name": "Product Master",
+   "path": "/products",
+   "component": "products",
+   "icon": "package",
+   "initiallyOpen": false,
+   "submenus": [
+    {
+     "name": "Finished Goods",
+     "path": "/products"
+    },
+    {
+     "name": "Product Categories",
+     "path": "/categories"
+    },
+    {
+     "name": "Raw Materials",
+     "path": "/raw-materials"
+    },
+    {
+     "name": "Image Gallery",
+     "path": "/image-gallery"
+    }
+   ]
+  },
+  {
+   "name": "Customer Management",
+   "path": "/customers",
+   "component": "customers",
+   "icon": "usersRound",
+   "initiallyOpen": false,
+   "submenus": [
+    {
+     "name": "Retail Customers",
+     "path": "/retail-customers"
+    },
+    {
+     "name": "Customer Locations",
+     "path": "/customer-locations"
+    }
+   ]
+  },
+  {
+   "name": "Sales Orders",
+   "path": "/orders",
+   "component": "orders",
+   "icon": "shoppingCart"
+  },
+  {
+   "name": "Distribution & Logistics",
+   "path": "/distribution",
+   "component": "distribution",
+   "icon": "usersShare",
+   "initiallyOpen": false,
+   "submenus": [
+    {
+     "name": "Dispatch",
+     "path": "/dispatch"
+    },
+    {
+     "name": "Delivery",
+     "path": "/delivery"
+    },
+    {
+     "name": "Manage Routes",
+     "path": "/manage-routes"
+    }
+   ]
+  },
+  {
+   "name": "Production",
+   "path": "/production",
+   "component": "production",
+   "icon": "factory",
+   "initiallyOpen": false,
+   "submenus": [
+    {
+     "name": "Recipes",
+     "path": "/production/recipes"
+    },
+    {
+     "name": "Batches",
+     "path": "/production/batches"
+    }
+   ]
+  },
+  {
+   "name": "Inventory",
+   "path": "/inventory",
+   "component": "inventory",
+   "icon": "warehouse",
+   "initiallyOpen": false,
+   "submenus": [
+    {
+     "name": "Inventory",
+     "path": "/inventory"
+    },
+    {
+     "name": "Raw Material Inventory",
+     "path": "/raw-material-inventory"
+    },
+    {
+     "name": "Stock Counts",
+     "path": "/stock-counts"
+    }
+   ]
+  },
+  {
+   "name": "Stock Audit Settlement",
+   "path": "/stock-audit",
+   "component": "stock-audit",
+   "icon": "clipboardCheck",
+   "initiallyOpen": false,
+   "submenus": [
+    {
+     "name": "Audits",
+     "path": "/stock-audit/audits"
+    },
+    {
+     "name": "Settlements",
+     "path": "/stock-audit/settlements"
+    }
+   ]
+  },
+  {
+   "name": "Procurement",
+   "path": "/procurement",
+   "component": "procurement",
+   "icon": "shoppingBag",
+   "initiallyOpen": false,
+   "submenus": [
+    {
+     "name": "Purchase Orders",
+     "path": "/procurement/purchase-orders"
+    },
+    {
+     "name": "Suppliers",
+     "path": "/procurement/suppliers"
+    }
+   ]
+  },
+  {
+   "name": "Finance",
+   "path": "/finance",
+   "component": "finance",
+   "icon": "banknote",
+   "initiallyOpen": false,
+   "submenus": [
+    {
+     "name": "Invoices",
+     "path": "/finance/invoices"
+    },
+    {
+     "name": "Payments",
+     "path": "/finance/payments"
+    }
+   ]
+  },
+  {
+   "name": "Workforce Management",
+   "path": "/our-staff",
+   "component": "our-staff",
+   "icon": "userCog"
+  }
+ ],
+ "_featureComment": "Live equivalent: globalSetting.appProp.orderManagementFeatures. EVERY action-bar button and mobile-footer action on /orders is gated behind one of these, and allocationStatus additionally gates a whole table column. All are enabled here so the full surface is visible; flip any to false to see the live app's reduced layout. NOTE: the live page also carries a Google Sheet export/sync toolbar; it is deliberately excluded from this prototype (divergence D9). createDelivery is the odd one out: its comment says 'defaults to shown' but the code checks `=== true`, so it is actually hidden unless explicitly enabled -- reproduced as-is, see divergence D10.",
+ "_insightComment": "Fields feeding the Smart Insights hover card (generateOrderInsights in OrderTable.jsx). Live these are computed from the dispatch/delivery/return records themselves; the seed carries the derived figures directly since those record sets are a later phase."
+}
