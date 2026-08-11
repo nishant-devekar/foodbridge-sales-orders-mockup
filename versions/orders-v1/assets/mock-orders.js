@@ -79,7 +79,6 @@
     mobileCreateMenuOpen: false,
 
     // Row-level
-    selectedOrders: [],
     insightFor: null,
     insightPos: { top: 0, left: 0 },
   };
@@ -108,13 +107,19 @@
   };
 
   // Order date offsets are resolved to real dates here; see seed `_dateComment`.
+  // The invoice number is rebuilt to the live shape: the order date with no
+  // zero padding (2026-8-11 -> "2026811") followed by a time-derived counter,
+  // giving the 13-14 digit numeric ids the reference screenshot shows.
   function materialiseOrders(seed) {
     return (seed.orders || []).map((o) => {
-      const d = addDays(todayStart(), -o.createdDaysAgo);
-      const hh = (o.createdHHMM || "0900").slice(0, 2);
-      const mm = (o.createdHHMM || "0900").slice(2);
-      d.setHours(Number(hh), Number(mm), 0, 0);
-      return Object.assign({}, o, { createdAt: d.toISOString() });
+      const d = new Date(Date.now() - o.createdMinutesAgo * 60000);
+      d.setSeconds(0, 0);
+      const datePart = `${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}`;
+      return Object.assign({}, o, {
+        createdAt: d.toISOString(),
+        invoice: datePart + o.invoiceSuffix,
+        createdDaysAgo: Math.floor(o.createdMinutesAgo / 1440),
+      });
     });
   }
 
@@ -442,7 +447,7 @@
     return `
       <div class="relative" data-statusroot>
         <div class="rs-control ${state.statusOpen ? "is-focused" : ""}" data-statustoggle>
-          <span class="${label ? "" : "rs-placeholder"}">${label ? esc(label) : "Status"}</span>
+          <span class="${label ? "" : "rs-placeholder"}">${label ? esc(label) : "All Status"}</span>
           <span class="flex items-center gap-1">
             ${state.status ? `<button type="button" data-statusclear class="text-gray-400 hover:text-gray-600">${icon("x", "w-4 h-4")}</button>` : ""}
             ${icon("chevronDown", "w-4 h-4 text-gray-400")}
@@ -600,10 +605,6 @@
 
     return `
       <tr class="group hidden hover:bg-gradient-to-r hover:from-slate-50 hover:to-transparent transition-all duration-200 border-b border-slate-100 md:table-row">
-        <td class="${WM.tableCell} py-4 pl-5 pr-1 w-10">
-          <input type="checkbox" data-selorder="${esc(order._id)}" ${state.selectedOrders.includes(order._id) ? "checked" : ""}
-            class="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" />
-        </td>
         <td class="${WM.tableCell} py-4 px-6 w-[200px]">
           <div class="flex items-center gap-3">
             <button data-toggle="${esc(order._id)}" class="p-1.5 -ml-1 hover:bg-slate-200 rounded-lg transition-all duration-200 hover:shadow-sm"
@@ -663,10 +664,14 @@
 
         ${
           showInvoice
-            ? `<td class="${WM.tableCell} py-4 px-6 w-[160px] text-center">
-                 <button data-invoice="${esc(order._id)}" class="p-2 rounded-md hover:bg-slate-100 transition-all duration-200" data-tip="Print invoice">
-                   ${icon("printer", "w-4 h-4 mx-auto", null, "color:#475569")}
-                 </button>
+            ? `<td class="${WM.tableCell} py-4 px-6 w-[120px]">
+                 <div class="flex items-center justify-center">
+                   <button data-invoice="${esc(order._id)}"
+                     class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                     title="Invoice">
+                     ${icon("fileText", "", 14)}<span>Invoice</span>${icon("chevronDown", "flex-shrink-0", 12)}
+                   </button>
+                 </div>
                </td>`
             : ""
         }
@@ -690,7 +695,7 @@
       </tr>
       ${
         isExpanded
-          ? `<tr class="hidden bg-gray-50 md:table-row"><td colspan="${5 + 1 + (showAllocation ? 1 : 0) + (showInvoice ? 1 : 0) + 1}" class="${WM.tableCell} p-0">${renderExpandedStub(order)}</td></tr>`
+          ? `<tr class="hidden bg-gray-50 md:table-row"><td colspan="${5 + (showAllocation ? 1 : 0) + (showInvoice ? 1 : 0) + 1}" class="${WM.tableCell} p-0">${renderExpandedStub(order)}</td></tr>`
           : ""
       }`;
   }
@@ -857,18 +862,13 @@
               <table class="block w-full table-auto md:table">
                 <thead class="${WM.tableHeader} hidden bg-slate-50 border-b-2 border-slate-200 md:table-header-group">
                   <tr>
-                    <td class="${WM.tableCell} py-3.5 pl-5 pr-1 w-10">
-                      <input type="checkbox" data-selall ${
-                        rows.length > 0 && rows.every((o) => state.selectedOrders.includes(o._id)) ? "checked" : ""
-                      } class="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none" />
-                    </td>
                     ${th("200px", label + " ID")}
                     ${th("140px", "Date")}
                     ${th("180px", "Customer")}
                     ${th("130px", "Amount")}
                     ${th("160px", "Status")}
                     ${showAllocation ? th("200px", "Allocation Status") : ""}
-                    ${showInvoice ? th("160px", "Invoice", true) : ""}
+                    ${showInvoice ? th("120px", "Invoice") : ""}
                     ${th("160px", "Actions", true)}
                   </tr>
                 </thead>
@@ -1155,26 +1155,6 @@
     const scrim = $("[data-mobilemenuscrim]");
     if (scrim) scrim.addEventListener("click", () => { state.mobileCreateMenuOpen = false; render(); });
 
-    /* ── Bulk row selection ─────────────────────────────────────────────── */
-    $$("[data-selorder]").forEach((cb) => cb.addEventListener("change", () => {
-      const id = cb.getAttribute("data-selorder");
-      const i = state.selectedOrders.indexOf(id);
-      if (i > -1) state.selectedOrders.splice(i, 1); else state.selectedOrders.push(id);
-      render();
-    }));
-    const sa = $("[data-selall]");
-    if (sa) sa.addEventListener("change", () => {
-      const pageIds = filteredOrders()
-        .slice((Math.min(state.page, Math.max(1, Math.ceil(filteredOrders().length / PAGE_SIZE) || 1)) - 1) * PAGE_SIZE,
-               Math.min(state.page, Math.max(1, Math.ceil(filteredOrders().length / PAGE_SIZE) || 1)) * PAGE_SIZE)
-        .map((o) => o._id);
-      const allOn = pageIds.every((id) => state.selectedOrders.includes(id));
-      state.selectedOrders = allOn
-        ? state.selectedOrders.filter((id) => !pageIds.includes(id))
-        : Array.from(new Set(state.selectedOrders.concat(pageIds)));
-      render();
-    });
-
     /* ── Smart Insights hover card ──────────────────────────────────────── */
     let insightTimer = null;
     $$("[data-insight]").forEach((el) => {
@@ -1233,7 +1213,6 @@
     if (opts.expand) state.expanded = [opts.expand];
     if (opts.search) { state.search = opts.search; state.searchInput = opts.search; }
     if (opts.dateOpen) state.dateOpen = true;
-    if (opts.select) state.selectedOrders = opts.select;
     if (opts.insightFor) {
       state.insightFor = opts.insightFor;
       state.insightPos = { top: 210, left: 340 };

@@ -7,7 +7,7 @@ working rule **R6** ("an accepted iteration becomes a version").
 **whole list screen**, meaning every control on it:
 
 - **The table** — search, status filter, date range, row expansion, per-row status transitions,
-  pagination, allocation-status column, bulk row selection, and the Smart Insights hover card
+  pagination, and the Smart Insights hover card
 - **The action bar** — Create Delivery, Create Order, Forecast Orders, Bulk Orders (with its mode
   menu), Generate Demand, Follow-up Reminders, Download All —
   each behind the same feature flag the live app uses
@@ -23,11 +23,12 @@ opens. Every one is reachable from the list and says what it is rather than doin
 
 | | |
 | --- | --- |
+| Published | <https://nishant-devekar.github.io/foodbridge-sales-orders-mockup/versions/orders-v1/index.html> |
 | Accepted | 2026-08-11 |
 | Route | `/orders` (TabOrders branch — the only reachable tab) |
 | Ported from | `storefront-frontend@develop`, `src/pages/Orders.jsx` |
 | Addendum | [`../../instructions/addendum-002-live-orders-port.md`](../../instructions/addendum-002-live-orders-port.md) |
-| Screens | 10 |
+| Screens | 9 |
 | Deferred to later phases | `CreateOrderDrawer`, `BulkOrderDrawer`, `CreateDeliveryModal`, `OrderReminderModal`, `OrderCartModal`, `OrderFulfillmentMetadata`, `OrderEditDrawer`, `SubOrderDrawer`, `DemandReportDrawer`, `OrderForecastDrawer` |
 | Not ported (unreachable live) | Batch Management / Production / Reports tabs, `CreateBatch`, `ProxyOrderSelection` |
 

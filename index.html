@@ -83,7 +83,7 @@
         Disposable HTML prototypes for the <strong>Foodbridge Module Sales Orders</strong> module.
         This round is a fidelity port of the <strong>whole orders list screen</strong> on the live storefront
         route <code>/orders</code> — the table and its filters, and every control around them: the action bar,
-        the bulk-order dropdown, the mobile footer, Smart Insights, bulk selection and the allocation column. Same structure, same classes, same edge cases, driven entirely by seed data.
+        the bulk-order dropdown, the mobile footer and Smart Insights. Same structure, same classes, same edge cases, driven entirely by seed data.
         Nothing here calls a real API, and nothing here is imported by <code>development/</code>.
       </p>
     </div>
@@ -132,25 +132,19 @@
       <a class="card" href="screens/orders/screen-08-action-bar.html">
         <div class="card-id">Screen 08</div>
         <div class="card-title">Action bar</div>
-        <p class="card-desc">All six actions plus the bulk-order dropdown, each behind its own feature flag.</p>
+        <p class="card-desc">The actions this tenant enables, plus the bulk-order dropdown. Each is flag-gated.</p>
       </a>
       <a class="card" href="screens/orders/screen-09-smart-insights.html">
         <div class="card-id">Screen 09</div>
         <div class="card-title">Smart Insights</div>
         <p class="card-desc">The hover card: rules on age, value, dispatch failures, return rate and fulfilment, capped at three.</p>
       </a>
-      <a class="card" href="screens/orders/screen-10-bulk-selection.html">
-        <div class="card-id">Screen 10</div>
-        <div class="card-title">Bulk selection</div>
-        <p class="card-desc">Rows selected through the checkbox column that feeds the bulk actions.</p>
-      </a>
     </div>
 
     <h2>Scope of this round</h2>
     <div class="note scope">
       <strong>Phase 1 covers the whole list screen — every control on it.</strong> That means the table and its
-      filters, and also the full action bar, the bulk-order mode dropdown, the mobile sticky footer, the Smart Insights hover card, bulk row selection and
-      the allocation-status column. Each is gated behind the same feature flag the live app uses.
+      filters, and also the full action bar, the bulk-order mode dropdown, the mobile sticky footer, the Smart Insights hover card, and bulk-order mode dropdown. Each is gated behind the same feature flag the live app uses.
       <p style="margin:.6rem 0 0">What is <strong>not</strong> here is what sits <em>behind</em> those buttons.
       <code>/orders</code> is by far the largest route ported so far — about 13,800 lines of reachable UI against
       ~6,000 for each of the previous two modules — so the destinations were split into later phases. Every one of
@@ -185,7 +179,6 @@
           <tr><td>Orders list</td><td>View / Timeline</td><td>Leaves this module’s boundary</td></tr>
           <tr><td>Orders list</td><td>Bulk Orders → Standard / Route</td><td>Bulk order creation — <em>deferred phase</em></td></tr>
           <tr><td>Orders list</td><td>Hover the insights icon</td><td>Smart Insights card, up to three ranked findings</td></tr>
-          <tr><td>Orders list</td><td>Select rows</td><td>Selection feeds the bulk actions</td></tr>
           <tr><td>Orders list</td><td>Create Delivery / Forecast / Demand / Reminders</td><td>Their own drawers — <em>deferred phases</em></td></tr>
           <tr><td>Mobile</td><td>Create (+)</td><td>Menu: create, bulk, or route order</td></tr>
           <tr><td>Loading</td><td>Data arrives</td><td>Orders list, or the empty state if none</td></tr>
@@ -201,6 +194,8 @@
         <li><strong>Order dates are stored as offsets,</strong> not absolute dates, so the date-range filter stays meaningful however long after freezing this is opened.</li>
         <li><strong>Filtering and paging run client-side here.</strong> Live they are server-side query parameters on <code>getAllOrders</code>; the mock reproduces the same contract against seed data.</li>
         <li><strong>The expanded row is a summary placeholder.</strong> Live it renders <code>OrderFulfillmentMetadata</code> (685 lines) — deferred with the rest of the detail phase.</li>
+        <li><strong>Feature flags match the reference tenant.</strong> The action bar shows the four buttons that tenant enables — Create Delivery, Create Order, Bulk Orders, Follow-up Reminders. Forecast Orders, Generate Demand, Download All and the Allocation Status column are all supported by the ported code but switched off in the seed, because the reference screenshot shows them off.</li>
+        <li><strong>Order status values come from the reference screenshot</strong> — Delivered, Dispatch Created, Skipped, Inprogress — but the <em>transitions between them</em> are inferred, since a screenshot cannot show a workflow.</li>
         <li><strong>The Google Sheet subsystem is dropped.</strong> Live, <code>/orders</code> carries an export/sync toolbar with a current-vs-history mode picker and an embedded sheet view that replaces the table. Excluded from this prototype by decision — it was built and then removed, so the omission is deliberate and recorded, not an oversight.</li>
         <li><strong>Smart Insights runs on seeded figures.</strong> Live the rules derive from the dispatch, delivery and return records themselves; those record sets are a later phase, so the seed carries the derived numbers and the rules run against them unchanged — same order, same thresholds, same copy, same three-item cap.</li>
         <li><strong><code>createDelivery</code> defaults differently from its comment.</strong> The live code comments “defaults to shown” but checks <code>=== true</code>, so the button is actually hidden unless explicitly enabled. Reproduced as-is.</li>

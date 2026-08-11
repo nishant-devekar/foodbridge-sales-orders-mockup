@@ -24,15 +24,22 @@ are no API calls, no framework, and no build step.
 | [07 — Loading](screens/orders/screen-07-loading.html) | Skeleton |
 | [08 — Action bar](screens/orders/screen-08-action-bar.html) | Every action, each behind its feature flag |
 | [09 — Smart Insights](screens/orders/screen-09-smart-insights.html) | The rule-driven hover card |
-| [10 — Bulk selection](screens/orders/screen-10-bulk-selection.html) | Row selection feeding the bulk actions |
 
 Append `?bare=1` to any screen URL to hide the discovery back-link for a clean comparison.
 
 ## Coverage
 
 **Covered:** every control on the list screen — the table and its filters, the action bar, the
-bulk-order mode dropdown, the mobile sticky footer, Smart Insights, bulk row selection and the
-allocation-status column.
+bulk-order mode dropdown, the mobile sticky footer and Smart Insights.
+
+**Matched against a live reference.** A screenshot of the real `/orders` page and its DOM were used
+to verify this. The container tree matched exactly; ten content and configuration differences were
+found and corrected, including two things that had been invented and do not exist in the live app
+(a selection-checkbox column and an allocation-status column this tenant has switched off). Feature
+flags, status values, order-id format and amount ranges all now follow the reference.
+
+Customer names and numbers are **not** copied from that reference — it carries real-looking tenant
+data and this site is public. Invented equivalents matched for shape and length are used instead.
 
 **Not covered:** what sits *behind* those controls. `/orders` is the largest route in this set —
 about 13,800 lines of reachable UI — so the destinations were split into later phases:
@@ -61,10 +68,13 @@ however long after freezing this is opened.
 
 ## On fidelity
 
-Fidelity is verified **structurally**: the generated DOM tree and every Tailwind class string are
-compared against the source JSX. It has *not* been verified against a running instance of the live
-app, which needs authentication and a backend. Any remaining visual difference would come from live
-runtime state the source alone does not reveal.
+Fidelity is verified two ways: **structurally** against the source JSX, and against a **real
+screenshot and DOM** of the live page. The container tree is an exact match.
+
+One thing remains unsettled: row pitch measures 78px here against roughly 68px read off the
+reference image, while computing it from the live JSX gives ~74. The reference reading is most
+likely a scaled-capture artifact rather than a real gap, but confirming that needs the
+authenticated app running, which was not available.
 
 ## Running locally
 
