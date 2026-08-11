@@ -116,7 +116,36 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 10,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "dinesh@example.com",
+   "comments": "Call on arrival, gate is locked.",
+   "item_list": [
+    {
+     "name": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "qty": 5,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Parle-G Gold 1kg",
+     "articleNumber": "FG-1022",
+     "qty": 5,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7534371",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-7534371",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-002",
@@ -155,7 +184,30 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 2,
-   "paymentMethod": "COD"
+   "paymentMethod": "COD",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "qty": 2,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7493161",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-7493161",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-003",
@@ -194,7 +246,30 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 5,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "qty": 5,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7451961",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-7451961",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-004",
@@ -241,7 +316,36 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 8,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "suresh@example.com",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "qty": 3,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "qty": 5,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7410751",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-7410751",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-005",
@@ -280,7 +384,30 @@
    "unassignedDispatches": 0,
    "allocationStatus": "PARTIALLY_ALLOCATED",
    "allocatedQty": 1,
-   "paymentMethod": "COD"
+   "paymentMethod": "COD",
+   "email": "",
+   "comments": "Call on arrival, gate is locked.",
+   "item_list": [
+    {
+     "name": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "qty": 2,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7369541",
+     "status": "in_transit",
+     "border": "border-blue-200",
+     "bg": "bg-blue-50",
+     "delivery": {
+      "order_number": "DLV-7369541",
+      "progress": 25
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-006",
@@ -335,7 +462,42 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 5,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "qty": 1,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "qty": 1,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "qty": 3,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7328331",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-7328331",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-007",
@@ -382,7 +544,36 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 8,
-   "paymentMethod": "COD"
+   "paymentMethod": "COD",
+   "email": "bharat@example.com",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "qty": 4,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "qty": 4,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7287131",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-7287131",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-008",
@@ -421,7 +612,30 @@
    "unassignedDispatches": 0,
    "allocationStatus": "PARTIALLY_ALLOCATED",
    "allocatedQty": 0,
-   "paymentMethod": "UPI"
+   "paymentMethod": "UPI",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "qty": 1,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7245921",
+     "status": "in_transit",
+     "border": "border-blue-200",
+     "bg": "bg-blue-50",
+     "delivery": {
+      "order_number": "DLV-7245921",
+      "progress": 75
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-009",
@@ -476,7 +690,39 @@
    "unassignedDispatches": 1,
    "allocationStatus": "PARTIALLY_ALLOCATED",
    "allocatedQty": 5,
-   "paymentMethod": "UPI"
+   "paymentMethod": "UPI",
+   "email": "",
+   "comments": "Repeat order \u2014 same as last week.",
+   "item_list": [
+    {
+     "name": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "qty": 5,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "qty": 5,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "qty": 1,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7204711",
+     "status": "in_transit",
+     "border": "border-blue-200",
+     "bg": "bg-blue-50",
+     "delivery": null,
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-010",
@@ -515,7 +761,27 @@
    "unassignedDispatches": 1,
    "allocationStatus": "PARTIALLY_ALLOCATED",
    "allocatedQty": 0,
-   "paymentMethod": "COD"
+   "paymentMethod": "COD",
+   "email": "rakesh@example.com",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "qty": 1,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7163511",
+     "status": "in_transit",
+     "border": "border-blue-200",
+     "bg": "bg-blue-50",
+     "delivery": null,
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-011",
@@ -562,7 +828,41 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 4,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "qty": 2,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "qty": 2,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7122301",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-7122301",
+      "progress": 100
+     },
+     "returns": [
+      {
+       "order_number": "RET-7122301",
+       "status": "pending pickup"
+      }
+     ]
+    }
+   ]
   },
   {
    "_id": "ord-012",
@@ -609,7 +909,24 @@
    "unassignedDispatches": 0,
    "allocationStatus": "UNALLOCATED",
    "allocatedQty": 0,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Parle-G Gold 1kg",
+     "articleNumber": "FG-1022",
+     "qty": 3,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "qty": 4,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": []
   },
   {
    "_id": "ord-013",
@@ -664,7 +981,42 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 6,
-   "paymentMethod": "UPI"
+   "paymentMethod": "UPI",
+   "email": "anand@example.com",
+   "comments": "Repeat order \u2014 same as last week.",
+   "item_list": [
+    {
+     "name": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "qty": 2,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "qty": 1,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "qty": 3,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-7039891",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-7039891",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-014",
@@ -711,7 +1063,36 @@
    "unassignedDispatches": 0,
    "allocationStatus": "PARTIALLY_ALLOCATED",
    "allocatedQty": 3,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "qty": 2,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "qty": 4,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6998681",
+     "status": "in_transit",
+     "border": "border-blue-200",
+     "bg": "bg-blue-50",
+     "delivery": {
+      "order_number": "DLV-6998681",
+      "progress": 25
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-015",
@@ -750,7 +1131,30 @@
    "unassignedDispatches": 0,
    "allocationStatus": "PARTIALLY_ALLOCATED",
    "allocatedQty": 2,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "qty": 5,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6957471",
+     "status": "in_transit",
+     "border": "border-blue-200",
+     "bg": "bg-blue-50",
+     "delivery": {
+      "order_number": "DLV-6957471",
+      "progress": 25
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-016",
@@ -813,7 +1217,48 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 12,
-   "paymentMethod": "UPI"
+   "paymentMethod": "UPI",
+   "email": "kiran@example.com",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "qty": 4,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "qty": 3,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "qty": 3,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Britannia Brown Bread 400g",
+     "articleNumber": "FG-1002",
+     "qty": 2,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6916261",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-6916261",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-017",
@@ -860,7 +1305,24 @@
    "unassignedDispatches": 0,
    "allocationStatus": "UNALLOCATED",
    "allocatedQty": 0,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "Customer asked for delivery before noon.",
+   "item_list": [
+    {
+     "name": "Maggi Noodles 70g x12",
+     "articleNumber": "FG-1009",
+     "qty": 1,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "qty": 5,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": []
   },
   {
    "_id": "ord-018",
@@ -915,7 +1377,58 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 8,
-   "paymentMethod": "UPI"
+   "paymentMethod": "UPI",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Parle-G Gold 1kg",
+     "articleNumber": "FG-1022",
+     "qty": 1,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "qty": 5,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "qty": 2,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6833851",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-6833851",
+      "progress": 100
+     },
+     "returns": [
+      {
+       "order_number": "RET-6833851",
+       "status": "pending pickup"
+      }
+     ]
+    },
+    {
+     "order_number": "DSP-6833852",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-6833852",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-019",
@@ -962,7 +1475,36 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 7,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "rana@example.com",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "qty": 4,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "qty": 3,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6792641",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-6792641",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-020",
@@ -1001,7 +1543,27 @@
    "unassignedDispatches": 1,
    "allocationStatus": "PARTIALLY_ALLOCATED",
    "allocatedQty": 2,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "qty": 5,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6751441",
+     "status": "in_transit",
+     "border": "border-blue-200",
+     "bg": "bg-blue-50",
+     "delivery": null,
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-021",
@@ -1056,7 +1618,42 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 11,
-   "paymentMethod": "UPI"
+   "paymentMethod": "UPI",
+   "email": "",
+   "comments": "Please pack fragile items separately.",
+   "item_list": [
+    {
+     "name": "Nandini Curd 500g",
+     "articleNumber": "FG-1003",
+     "qty": 3,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Haldiram Aloo Bhujia 400g",
+     "articleNumber": "FG-1013",
+     "qty": 4,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "qty": 4,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6710231",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-6710231",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-022",
@@ -1095,7 +1692,30 @@
    "unassignedDispatches": 0,
    "allocationStatus": "PARTIALLY_ALLOCATED",
    "allocatedQty": 1,
-   "paymentMethod": "UPI"
+   "paymentMethod": "UPI",
+   "email": "naveen@example.com",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Farm Fresh Paneer 200g",
+     "articleNumber": "FG-1004",
+     "qty": 2,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6669021",
+     "status": "in_transit",
+     "border": "border-blue-200",
+     "bg": "bg-blue-50",
+     "delivery": {
+      "order_number": "DLV-6669021",
+      "progress": 75
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-023",
@@ -1142,7 +1762,47 @@
    "unassignedDispatches": 0,
    "allocationStatus": "FULLY_ALLOCATED",
    "allocatedQty": 5,
-   "paymentMethod": "Credit"
+   "paymentMethod": "Credit",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Amul Taaza Toned Milk 1L",
+     "articleNumber": "FG-1001",
+     "qty": 4,
+     "measurement": "Pkt"
+    },
+    {
+     "name": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "qty": 1,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": [
+    {
+     "order_number": "DSP-6627821",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-6627821",
+      "progress": 100
+     },
+     "returns": []
+    },
+    {
+     "order_number": "DSP-6627822",
+     "status": "delivered",
+     "border": "border-emerald-200",
+     "bg": "bg-emerald-50",
+     "delivery": {
+      "order_number": "DLV-6627822",
+      "progress": 100
+     },
+     "returns": []
+    }
+   ]
   },
   {
    "_id": "ord-024",
@@ -1181,7 +1841,18 @@
    "unassignedDispatches": 0,
    "allocationStatus": "UNALLOCATED",
    "allocatedQty": 0,
-   "paymentMethod": "COD"
+   "paymentMethod": "COD",
+   "email": "",
+   "comments": "",
+   "item_list": [
+    {
+     "name": "Tata Salt 1kg",
+     "articleNumber": "FG-1007",
+     "qty": 4,
+     "measurement": "Pkt"
+    }
+   ],
+   "dispatchRecords": []
   }
  ],
  "totalDoc": 24,
@@ -1362,5 +2033,6 @@
  ],
  "_featureComment": "Live equivalent: globalSetting.appProp.orderManagementFeatures. Every action-bar button and the allocation column are gated behind these. THESE VALUES ARE READ OFF THE REFERENCE SCREENSHOT of the QA store tenant, which shows exactly four action buttons and no allocation column. Flip any to true to see the fuller layout the code supports.",
  "_insightComment": "Fields feeding the Smart Insights hover card (generateOrderInsights in OrderTable.jsx). Live these are computed from the dispatch/delivery/return records themselves; the seed carries the derived figures directly since those record sets are a later phase.",
- "_methodTotalsComment": "Live this bar renders only when the API returns methodTotals. The reference screenshot shows none, so it is empty here and the bar does not render."
+ "_methodTotalsComment": "Live this bar renders only when the API returns methodTotals. The reference screenshot shows none, so it is empty here and the bar does not render.",
+ "_expandComment": "Fields feeding OrderFulfillmentMetadata, the panel that opens when a row is expanded. It has four tabs -- Details, Items (n), Comments, Fulfillment. Live the dispatch/delivery/return records are fetched per order; the seed carries them inline."
 }

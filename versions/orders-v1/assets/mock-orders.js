@@ -70,6 +70,9 @@
     page: 1,
     expanded: [],
     copied: "",
+    fmTab: {},
+    invoiceMenuFor: null,
+    invoiceMenuPos: { top: 0, left: 0 },
     statusOpen: false,
     dateOpen: false,
     exporting: false,
@@ -536,30 +539,163 @@
             ${icon("chevronDown", `h-4 w-4 text-slate-500 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`)}
           </button>
         </div>
-        ${isExpanded ? `<div class="border-t border-slate-100">${renderExpandedStub(order)}</div>` : ""}
+        ${isExpanded ? renderFulfillmentMetadata(order) : ""}
       </div>`;
   }
 
-  /* Expanded row placeholder. Live this is <OrderFulfillmentMetadata/> — 685
-     lines of dispatch/delivery/return detail, deferred to a later phase. The
-     row still expands so the interaction is representable. */
-  function renderExpandedStub(order) {
-    const c = order.fulfillment || { dispatches: 0, deliveries: 0, returns: 0 };
-    return `
-      <div class="px-5 py-4 bg-slate-50">
-        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-          <span class="inline-flex items-center gap-1.5 text-slate-600 text-xs font-medium bg-slate-100 px-2.5 py-1 rounded-full">${
-            (order.cart || []).length
-          } line item${(order.cart || []).length !== 1 ? "s" : ""}</span>
-          <span class="text-slate-600"><span class="text-slate-400">Dispatches</span> <span class="font-semibold text-emerald-700">${c.dispatches}</span></span>
-          <span class="text-slate-600"><span class="text-slate-400">Deliveries</span> <span class="font-semibold text-violet-700">${c.deliveries}</span></span>
-          <span class="text-slate-600"><span class="text-slate-400">Returns</span> <span class="font-semibold text-orange-700">${c.returns}</span></span>
+
+  /* ── OrderFulfillmentMetadata.jsx — the expanded-row panel ─────────────── */
+  const FM_TABS = [
+    { id: "details", label: "Details", icon: "fileText" },
+    { id: "items", label: "Items", icon: "shoppingBag" },
+    { id: "comments", label: "Comments", icon: "messageSquare" },
+    { id: "fulfillment", label: "Fulfillment", icon: "mapPin" },
+  ];
+
+  function fmField(label, value, extra) {
+    return `<div><p class="text-xs text-slate-500 mb-1">${esc(label)}</p>
+      <p class="text-sm font-medium text-slate-900${extra || ""}">${value}</p></div>`;
+  }
+
+  function renderFmDetails(order) {
+    const cust = customerFor(order);
+    const copied = state.copied === order.invoice;
+    return `<div class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-xs text-slate-500 mb-1">Order Number</p>
+          <div class="flex items-center gap-2">
+            <p class="text-sm font-mono font-medium text-slate-900">${esc(order.invoice)}</p>
+            <button data-copy="${esc(order.invoice)}" class="p-1 rounded-md hover:bg-slate-100 transition-all duration-200 group/copy"
+              title="${copied ? "Copied!" : "Copy Order reference"}">
+              ${copied ? icon("check", "w-3.5 h-3.5 text-emerald-500") : icon("copy", "w-3.5 h-3.5 text-slate-400 group-hover/copy:text-slate-600")}
+            </button>
+          </div>
         </div>
-        <p class="mt-3 text-xs text-slate-500">
-          The live app renders <code class="font-mono">OrderFulfillmentMetadata</code> here — per-dispatch,
-          per-delivery and per-return detail. Not ported in this discovery round; see divergence D5.
-        </p>
+        <div>
+          <p class="text-xs text-slate-500 mb-1">Status</p>
+          <p class="text-sm font-medium text-slate-900 capitalize">${esc(String(order.status).replace(/_/g, " "))}</p>
+        </div>
+        ${fmField("Customer Name", esc(cust.name || "N/A"))}
+        ${fmField("Phone", esc(cust.contact || "N/A"))}
+        <div class="col-span-2 sm:col-span-1">
+          <p class="text-xs text-slate-500 mb-1">Email</p>
+          <p class="text-sm font-medium text-slate-900 break-all">${esc(order.email || "N/A")}</p>
+        </div>
+        <div class="col-span-2 sm:col-span-1">
+          <p class="text-xs text-slate-500 mb-1">Order Date</p>
+          <p class="text-sm font-medium text-slate-900">${new Date(order.createdAt).toLocaleString()}</p>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderFmItems(order) {
+    const items = order.item_list || [];
+    if (items.length === 0)
+      return `<div><div class="py-8 text-center text-sm text-slate-500">No items found</div></div>`;
+    return `<div><div class="space-y-2">
+      ${items.map((item) => `<div class="border border-slate-200 rounded p-2 hover:bg-slate-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <div class="flex-1 min-w-0">
+            <h4 class="text-sm font-medium text-slate-900 truncate">${esc(item.name)}</h4>
+            ${item.articleNumber ? `<p class="text-xs text-slate-500">Art no: ${esc(item.articleNumber)}</p>` : ""}
+          </div>
+          <div class="flex-shrink-0 text-right">
+            <span class="text-sm font-medium text-slate-900">${item.qty} ${esc(item.measurement || "")}</span>
+          </div>
+        </div>
+      </div>`).join("")}
+    </div></div>`;
+  }
+
+  function renderFmComments(order) {
+    const has = !!(order.comments && String(order.comments).trim());
+    return `<div class="bg-white rounded-lg border border-gray-200">
+      ${
+        has
+          ? `<div class="px-6 py-4"><p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${esc(order.comments)}</p></div>`
+          : `<div class="flex flex-col items-center justify-center py-12 text-center px-6">
+               <div class="p-4 bg-gray-50 rounded-full mb-4">${icon("messageSquare", "text-gray-400", 28)}</div>
+               <h3 class="text-base font-semibold text-gray-900 mb-1">No Comments Added</h3>
+               <p class="text-sm text-gray-500 max-w-sm">There are no comments associated with this order yet.</p>
+             </div>`
+      }
+    </div>`;
+  }
+
+  function renderFmFulfillment(order) {
+    const ds = order.dispatchRecords || [];
+    if (ds.length === 0) {
+      return `<div class="p-3 sm:p-6">
+        <div class="flex flex-col items-center justify-center py-12 text-center">
+          <div class="p-4 rounded-full bg-gray-100 mb-4">${icon("box", "w-8 h-8 text-gray-400")}</div>
+          <p class="text-sm font-semibold text-gray-700">No Fulfillment Activity</p>
+          <p class="text-xs text-gray-500 mt-1">No dispatches, deliveries, or returns have been created for this order yet</p>
+        </div>
       </div>`;
+    }
+    const refRow = (label, ref, iconName, colour) => `
+      <div class="flex items-center gap-2">
+        ${icon(iconName, `w-4 h-4 ${colour} flex-shrink-0`)}
+        <div class="flex-1">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-medium text-slate-700">${label}</span>
+            <span class="text-xs font-mono text-slate-600">${esc(ref)}</span>
+            <button data-copy="${esc(ref)}" class="p-0.5 rounded hover:bg-slate-100 transition-colors" title="Copy ${label}">
+              ${state.copied === ref ? icon("check", "w-3 h-3 text-emerald-500") : icon("copy", "w-3 h-3 text-slate-400")}
+            </button>
+          </div>
+        </div>
+      </div>`;
+    return `<div class="p-3 sm:p-6 bg-white"><div class="space-y-2">
+      ${ds.map((dp) => `
+        <div class="rounded-lg border ${dp.border} ${dp.bg} p-3 shadow-sm">
+          ${refRow("Dispatch", dp.order_number, "truck", "text-slate-700")}
+          <p class="mt-1 pl-6 text-xs text-slate-500 capitalize">${esc(String(dp.status).replace(/_/g, " "))}</p>
+          ${
+            dp.delivery
+              ? `<div class="mt-2 ml-6 rounded-lg border border-violet-200 bg-violet-50 p-2.5">
+                   ${refRow("Delivery Run", dp.delivery.order_number, "mapPin", "text-violet-700")}
+                   <div class="mt-1.5 pl-6 flex items-center gap-2">
+                     <div class="h-1.5 flex-1 rounded-full bg-white overflow-hidden">
+                       <div class="h-full rounded-full bg-violet-500" style="width:${dp.delivery.progress}%"></div>
+                     </div>
+                     <span class="text-xs text-slate-600 font-medium">${dp.delivery.progress}%</span>
+                   </div>
+                 </div>`
+              : ""
+          }
+          ${(dp.returns || []).map((rt) => `
+            <div class="mt-2 ml-6 rounded-lg border border-orange-200 bg-orange-50 p-2.5">
+              ${refRow("Return", rt.order_number, "cornerUpLeft", "text-orange-700")}
+              <p class="mt-1 pl-6 text-xs text-slate-500 capitalize">${esc(rt.status)}</p>
+            </div>`).join("")}
+        </div>`).join("")}
+    </div></div>`;
+  }
+
+  function renderFulfillmentMetadata(order) {
+    const active = state.fmTab[order._id] || "details";
+    const items = (order.item_list || []).length;
+    const tabs = FM_TABS.map((t) => `
+      <button data-fmtab="${esc(order._id)}" data-fmtabid="${t.id}"
+        class="flex-1 px-2 py-3 text-xs font-medium border-b-2 transition-colors ${
+          active === t.id ? "border-emerald-500 text-emerald-600" : "border-transparent text-slate-500 hover:text-slate-700"
+        }">
+        <div class="flex items-center justify-center gap-1.5">${icon(t.icon, "", 14)}<span class="truncate">${t.label}${
+          t.id === "items" && items > 0 ? ` (${items})` : ""
+        }</span></div>
+      </button>`).join("");
+    let body = "";
+    if (active === "details") body = renderFmDetails(order);
+    else if (active === "items") body = renderFmItems(order);
+    else if (active === "comments") body = renderFmComments(order);
+    else body = renderFmFulfillment(order);
+    return `<div class="border-t border-slate-200">
+      <div class="flex border-b border-slate-200 bg-white">${tabs}</div>
+      <div class="${active === "fulfillment" ? "" : "p-3 sm:p-6 bg-white"}">${body}</div>
+    </div>`;
   }
 
   /* ── OrderTable.jsx — desktop row ─────────────────────────────────────── */
@@ -671,6 +807,20 @@
                      title="Invoice">
                      ${icon("fileText", "", 14)}<span>Invoice</span>${icon("chevronDown", "flex-shrink-0", 12)}
                    </button>
+                   ${
+                     state.invoiceMenuFor === order._id
+                       ? `<div data-invoicemenu class="absolute z-[9999] mt-1 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden"
+                            style="top:${state.invoiceMenuPos.top}px;left:${state.invoiceMenuPos.left}px;position:fixed">
+                            <button data-printtype="A4" class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap">
+                              ${icon("printer", "flex-shrink-0", 14)}A4 Print
+                            </button>
+                            <div class="border-t border-gray-100"></div>
+                            <button data-printtype="Thermal" class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap">
+                              ${icon("printer", "flex-shrink-0", 14)}Thermal Print
+                            </button>
+                          </div>`
+                       : ""
+                   }
                  </div>
                </td>`
             : ""
@@ -695,7 +845,7 @@
       </tr>
       ${
         isExpanded
-          ? `<tr class="hidden bg-gray-50 md:table-row"><td colspan="${5 + (showAllocation ? 1 : 0) + (showInvoice ? 1 : 0) + 1}" class="${WM.tableCell} p-0">${renderExpandedStub(order)}</td></tr>`
+          ? `<tr class="hidden bg-gray-50 md:table-row"><td colspan="${5 + (showAllocation ? 1 : 0) + (showInvoice ? 1 : 0) + 1}" class="${WM.tableCell} p-0">${renderFulfillmentMetadata(order)}</td></tr>`
           : ""
       }`;
   }
@@ -1030,6 +1180,13 @@
       if (state.statusOpen && sr && !sr.contains(e.target)) { state.statusOpen = false; changed = true; }
       const dr = outlet.querySelector("[data-dateroot]");
       if (state.dateOpen && dr && !dr.contains(e.target)) { state.dateOpen = false; changed = true; }
+      if (state.invoiceMenuFor) {
+        const im = outlet.querySelector("[data-invoicemenu]");
+        const trigger = outlet.querySelector(`[data-invoice="${state.invoiceMenuFor}"]`);
+        if (im && !im.contains(e.target) && trigger && !trigger.contains(e.target)) {
+          state.invoiceMenuFor = null; changed = true;
+        }
+      }
       const br = outlet.querySelector("[data-bulkroot]");
       if (state.bulkMenuOpen && br && !br.contains(e.target)) { state.bulkMenuOpen = false; changed = true; }
       if (changed) render();
@@ -1052,6 +1209,14 @@
         const i = state.expanded.indexOf(id);
         if (i > -1) state.expanded.splice(i, 1);
         else state.expanded.push(id);
+        render();
+      })
+    );
+
+    $$("[data-fmtab]").forEach((b) =>
+      b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        state.fmTab[b.getAttribute("data-fmtab")] = b.getAttribute("data-fmtabid");
         render();
       })
     );
@@ -1114,8 +1279,30 @@
       if (b.disabled) return;
       boundary("Live this opens OrderEditDrawer (636 lines).\n\nDeferred to a later phase — see addendum divergence D5.")(e);
     }));
-    $$("[data-invoice]").forEach((b) => b.addEventListener("click", boundary(
-      "Live this prints a thermal invoice via InvoicePrintButton.\n\nNot ported in this round.")));
+    $$("[data-invoice]").forEach((b) =>
+      b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = b.getAttribute("data-invoice");
+        if (state.invoiceMenuFor === id) { state.invoiceMenuFor = null; render(); return; }
+        const r = b.getBoundingClientRect();
+        state.invoiceMenuPos = { top: r.bottom + 4, left: Math.max(8, r.right - 160) };
+        state.invoiceMenuFor = id;
+        render();
+      })
+    );
+    $$("[data-printtype]").forEach((b) =>
+      b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const kind = b.getAttribute("data-printtype");
+        state.invoiceMenuFor = null;
+        render();
+        window.alert(
+          kind === "A4"
+            ? "Live this renders an A4 invoice PDF for the order.\n\nPDF generation is outside this discovery round."
+            : "Live this opens ThermalPrintModal, a receipt preview for a thermal printer.\n\nNot ported in this round."
+        );
+      })
+    );
 
 
     /* ── Action bar / mobile footer ─────────────────────────────────────── */

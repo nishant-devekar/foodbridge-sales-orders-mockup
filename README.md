@@ -18,7 +18,7 @@ are no API calls, no framework, and no build step.
 | [01 — Orders list](screens/orders/screen-01-orders-list.html) | The landing state: search, status filter, date range, export |
 | [02 — Filtered by status](screens/orders/screen-02-status-filtered.html) | Narrowed to Delivered |
 | [03 — Date range filter](screens/orders/screen-03-date-range.html) | The range picker open |
-| [04 — Order expanded](screens/orders/screen-04-order-expanded.html) | A row opened to its fulfilment section |
+| [04 — Order expanded](screens/orders/screen-04-order-expanded.html) | The fulfilment panel: Details, Items, Comments, Fulfillment tabs |
 | [05 — No results](screens/orders/screen-05-no-results.html) | A filter that matches nothing |
 | [06 — Empty state](screens/orders/screen-06-empty.html) | No orders at all |
 | [07 — Loading](screens/orders/screen-07-loading.html) | Skeleton |
@@ -41,7 +41,10 @@ flags, status values, order-id format and amount ranges all now follow the refer
 Customer names and numbers are **not** copied from that reference — it carries real-looking tenant
 data and this site is public. Invented equivalents matched for shape and length are used instead.
 
-**Not covered:** what sits *behind* those controls. `/orders` is the largest route in this set —
+**Overlays built so far:** the row-expand fulfilment panel (`OrderFulfillmentMetadata` — four tabs,
+with dispatch → delivery-run → return cards) and the Invoice dropdown (A4 / Thermal).
+
+**Not covered:** the remaining five overlays behind the action bar. `/orders` is the largest route in this set —
 about 13,800 lines of reachable UI — so the destinations were split into later phases:
 `CreateOrderDrawer` (4,832 lines on its own), `BulkOrderDrawer`, `CreateDeliveryModal`,
 `OrderReminderModal`, `OrderCartModal`, `OrderFulfillmentMetadata`, `OrderEditDrawer`,
