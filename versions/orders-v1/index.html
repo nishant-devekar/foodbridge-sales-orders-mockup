@@ -80,8 +80,9 @@
       <span class="eyebrow">Frozen · orders-v1 · phase 1</span>
       <h1>Sales Orders <span class="route-tag">/orders</span></h1>
       <p class="sub">
-        <strong>Frozen snapshot <code>orders-v1</code>, accepted 2026-08-11.</strong> Matched against a live
-        reference screenshot and DOM. Immutable — iterate in <code>discovery/</code>. This round is a fidelity port of the <strong>whole orders list screen</strong> on the live storefront
+        <strong>Frozen snapshot <code>orders-v1</code>, accepted 2026-08-11; re-cut 2026-08-12 with three more
+        overlays.</strong> Matched against the live app — reference screenshot, DOM and computed geometry.
+        Immutable — iterate in <code>discovery/</code>. This round is a fidelity port of the <strong>whole orders list screen</strong> on the live storefront
         route <code>/orders</code> — the table and its filters, and every control around them: the action bar,
         the bulk-order dropdown, the mobile footer and Smart Insights. Same structure, same classes, same edge cases, driven entirely by seed data.
         Nothing here calls a real API, and nothing here is imported by <code>development/</code>.
@@ -139,6 +140,21 @@
         <div class="card-title">Smart Insights</div>
         <p class="card-desc">The hover card: rules on age, value, dispatch failures, return rate and fulfilment, capped at three.</p>
       </a>
+      <a class="card" href="screens/orders/screen-10-follow-up-reminders.html">
+        <div class="card-id">Screen 10</div>
+        <div class="card-title">Follow-up Reminders</div>
+        <p class="card-desc">Customers with no sales orders in the window, filterable by search, since and catalogue.</p>
+      </a>
+      <a class="card" href="screens/orders/screen-11-create-delivery.html">
+        <div class="card-id">Screen 11</div>
+        <div class="card-title">Create Delivery</div>
+        <p class="card-desc">Step 1 of the route-delivery wizard — pick which existing orders join the run.</p>
+      </a>
+      <a class="card" href="screens/orders/screen-12-create-sales-orders.html">
+        <div class="card-id">Screen 12</div>
+        <div class="card-title">Create Sales Orders</div>
+        <p class="card-desc">The right-hand order drawer in its empty state, before a customer is chosen.</p>
+      </a>
     </div>
 
     <h2>Scope of this round</h2>
@@ -150,9 +166,10 @@
       ~6,000 for each of the previous two modules — so the destinations were split into later phases. Every one of
       them is reachable from the list and says what it is rather than doing nothing:</p>
       <ul>
-        <li><strong>Order creation</strong> — <code>CreateOrderDrawer</code> (4,832 lines, 32k closure) and <code>BulkOrderDrawer</code>. The drawer alone is larger than the staff and inventory modules combined.</li>
-        <li><strong>Order detail and amendment</strong> — <code>OrderCartModal</code>, <code>OrderFulfillmentMetadata</code>, <code>OrderEditDrawer</code>, <code>SubOrderDrawer</code>.</li>
-        <li><strong>Reporting and follow-up</strong> — <code>DemandReportDrawer</code>, <code>OrderForecastDrawer</code>, <code>OrderReminderModal</code>, <code>CreateDeliveryModal</code>.</li>
+        <li><strong>Built since</strong> — <code>OrderFulfillmentMetadata</code> (screen 04), <code>InvoicePrintButton</code>, <code>OrderReminderModal</code> (screen 10), <code>CreateDeliveryModal</code> step 1 (screen 11), and <code>CreateOrderDrawer</code>&rsquo;s empty state (screen 12).</li>
+        <li><strong>Order creation, in depth</strong> — <code>CreateOrderDrawer</code> beyond the empty state (4,832 lines, 32k closure) and <code>BulkOrderDrawer</code>. The drawer alone is larger than the staff and inventory modules combined.</li>
+        <li><strong>Order detail and amendment</strong> — <code>OrderCartModal</code>, <code>OrderEditDrawer</code>, <code>SubOrderDrawer</code>.</li>
+        <li><strong>Reporting</strong> — <code>DemandReportDrawer</code>, <code>OrderForecastDrawer</code>; plus steps 2&ndash;3 of <code>CreateDeliveryModal</code>.</li>
       </ul>
     </div>
 
@@ -183,7 +200,15 @@
           <tr><td>Orders list</td><td>View / Timeline</td><td>Leaves this module’s boundary</td></tr>
           <tr><td>Orders list</td><td>Bulk Orders → Standard / Route</td><td>Bulk order creation — <em>deferred phase</em></td></tr>
           <tr><td>Orders list</td><td>Hover the insights icon</td><td>Smart Insights card, up to three ranked findings</td></tr>
-          <tr><td>Orders list</td><td>Create Delivery / Forecast / Demand / Reminders</td><td>Their own drawers — <em>deferred phases</em></td></tr>
+          <tr><td>Orders list</td><td>Follow-up Reminders</td><td>Reminder modal — customers with no orders in the window</td></tr>
+          <tr><td>Reminder modal</td><td>Search / Since / Catalogue</td><td>List filters in place; footer keeps the tenant-wide count</td></tr>
+          <tr><td>Reminder modal</td><td>Create Sales Orders, on a row</td><td>Order drawer, empty state</td></tr>
+          <tr><td>Orders list</td><td>Create Delivery</td><td>Delivery wizard, step 1 — order selection</td></tr>
+          <tr><td>Delivery wizard</td><td>Select a row / Select all</td><td>Selection toggles; “Assign Staff” enables</td></tr>
+          <tr><td>Delivery wizard</td><td>Assign Staff</td><td>Step 2 of 3 — <em>deferred phase</em></td></tr>
+          <tr><td>Orders list</td><td>Create Sales Orders</td><td>Right drawer, empty until a customer is chosen</td></tr>
+          <tr><td>Order drawer</td><td>X / mask</td><td>Back to the orders list</td></tr>
+          <tr><td>Orders list</td><td>Forecast / Demand</td><td>Their own drawers — <em>deferred phases</em></td></tr>
           <tr><td>Mobile</td><td>Create (+)</td><td>Menu: create, bulk, or route order</td></tr>
           <tr><td>Loading</td><td>Data arrives</td><td>Orders list, or the empty state if none</td></tr>
         </tbody>

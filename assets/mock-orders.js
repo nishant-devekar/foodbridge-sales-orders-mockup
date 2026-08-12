@@ -71,6 +71,9 @@
     expanded: [],
     copied: "",
     fmTab: {},
+    reminderOpen: false, reminderSearch: "", reminderSince: "Today", reminderCatalogue: "All Catalogues",
+    deliveryOpen: false, deliverySelected: [],
+    createOrderOpen: false,
     invoiceMenuFor: null,
     invoiceMenuPos: { top: 0, left: 0 },
     statusOpen: false,
@@ -850,6 +853,261 @@
       }`;
   }
 
+
+  /* ══ OVERLAYS — markup captured from the live app on 2026-08-11 ══════════
+     Classes below are copied from the running page's DOM, not inferred from
+     source. Customer names and numbers are invented; the live modals show real
+     tenant data and this prototype is public. */
+
+  /* ── OrderReminderModal — "Follow-up Reminders" ───────────────────────── */
+  function renderReminderModal() {
+    if (!state.reminderOpen) return "";
+    const rows = (state.seed.followUpCustomers || [])
+      .filter((c) => !state.reminderSearch ||
+        c.name.toLowerCase().includes(state.reminderSearch.toLowerCase()) ||
+        c.phone.includes(state.reminderSearch))
+      .filter((c) => state.reminderCatalogue === "All Catalogues" || c.catalogue === state.reminderCatalogue);
+
+    const row = (c) => `
+      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-emerald-500 dark:hover:border-emerald-500 transition-all shadow-sm">
+        <div class="px-3 py-2.5">
+          <div class="hidden sm:flex items-center gap-3">
+            <button class="flex-shrink-0 p-0.5 transition-colors">${icon("square", "w-4 h-4 text-gray-400 hover:text-emerald-500 dark:text-gray-500")}</button>
+            <div class="w-9 h-9 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">${icon("user", "w-4 h-4 text-gray-600 dark:text-gray-400")}</div>
+            <span class="text-sm font-semibold text-gray-900 dark:text-white truncate flex-1 min-w-0">${esc(c.name)}</span>
+            <div class="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 flex-shrink-0">
+              ${icon("phone", "w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500")}
+              <span class="font-medium whitespace-nowrap">${esc(c.phone)}</span>
+              <button data-copy="${esc(c.phone)}" class="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors">${icon("copy", "w-3 h-3")}</button>
+            </div>
+            <span class="inline-flex items-center px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs rounded font-medium flex-shrink-0 max-w-[130px]">
+              <span class="truncate">${esc(c.catalogue)}</span>
+            </span>
+            <button data-createorder class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg transition-colors whitespace-nowrap flex-shrink-0">Create ${esc(state.label)}</button>
+            <button class="p-2 border !border-amber-200 hover:!bg-amber-50 rounded-md bg-amber-50 text-amber-700 flex-shrink-0">${icon("bell", "w-4 h-4")}</button>
+            <button class="p-1.5 rounded-lg transition-colors flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 flex-shrink-0">${icon("chevronDown", "w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform")}</button>
+          </div>
+        </div>
+      </div>`;
+
+    const field = (label, control) => `<div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">${label}</label>
+      <div class="relative">${control}</div></div>`;
+    const selCls = "w-full pl-3 pr-10 h-[38px] text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 appearance-none cursor-pointer transition-all duration-150";
+    const chev = icon("chevronDown", "absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none");
+
+    return `
+      <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" data-remindermodal>
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col mx-4">
+          <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center gap-3 flex-1">
+              <div class="w-10 h-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center flex-shrink-0">${icon("circleAlert", "w-5 h-5 text-emerald-600 dark:text-emerald-400")}</div>
+              <div class="flex-1 min-w-0">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white">Follow-up Customers Without ${esc(state.label)} ${esc(state.reminderSince)}</h2>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">These customers haven't placed sales orders in the selected timeframe. Call them to convert into sales.</p>
+              </div>
+            </div>
+            <button data-reminderclose class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0 ml-4">${icon("x", "w-5 h-5 text-gray-500")}</button>
+          </div>
+
+          <div class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex-shrink-0">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+              ${field("Search Customers", `<input data-remindersearch value="${esc(state.reminderSearch)}" placeholder="Search by name, phone, email..."
+                class="w-full pl-3 pr-10 h-[38px] text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-150" />
+                ${icon("search", "absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none")}`)}
+              ${field("No Sales Orders Since", `<select data-remindersince class="${selCls}">${(state.seed.sinceOptions || []).map((o) => `<option ${o === state.reminderSince ? "selected" : ""}>${esc(o)}</option>`).join("")}</select>${chev}`)}
+              ${field("Filter by Catalogue", `<select data-remindercatalogue class="${selCls}">${(state.seed.catalogues || []).map((o) => `<option ${o === state.reminderCatalogue ? "selected" : ""}>${esc(o)}</option>`).join("")}</select>${chev}`)}
+            </div>
+          </div>
+
+          <div class="flex-1 overflow-y-auto px-6 py-4">
+            <div class="space-y-2">${rows.map(row).join("") || `<p class="py-12 text-center text-sm text-gray-500">No customers match that filter.</p>`}</div>
+          </div>
+
+          <div class="px-6 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between flex-wrap gap-2 flex-shrink-0">
+            <div class="flex items-center gap-4">
+              <p class="text-sm text-gray-700 dark:text-gray-300"><span class="font-bold text-emerald-600 dark:text-emerald-400">${state.seed.followUpTotal}</span> <span class="font-medium">customers to follow up</span></p>
+              <div class="h-4 w-px bg-gray-300 dark:bg-gray-600"></div>
+              <p class="text-xs text-gray-600 dark:text-gray-400"><span class="font-medium">Tip:</span> Call them to convert into orders</p>
+            </div>
+            <button data-reminderclose class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors">Close</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  /* ── CreateDeliveryModal — 3-step wizard, step 1 ──────────────────────── */
+  const TONE = { amber: "bg-amber-100 text-amber-700", blue: "bg-blue-100 text-blue-700",
+                 emerald: "bg-emerald-100 text-emerald-700", violet: "bg-violet-100 text-violet-700",
+                 rose: "bg-rose-100 text-rose-700" };
+
+  function renderCreateDeliveryModal() {
+    if (!state.deliveryOpen) return "";
+    const cands = state.seed.deliveryCandidates || [];
+    const total = state.seed.deliveryCandidateTotal;
+    const sel = state.deliverySelected;
+
+    const step = (n, label, active) => `
+      <div class="flex items-center flex-1 min-w-0">
+        <div class="flex flex-col items-center gap-1 flex-shrink-0">
+          <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors ${active ? "bg-white border-green-600 text-green-700" : "bg-white border-gray-200 text-gray-400"}">${n}</div>
+          <span class="text-[10px] font-semibold whitespace-nowrap ${active ? "text-green-700" : "text-gray-400"}">${label}</span>
+        </div>
+        <div class="flex-1 h-0.5 mx-2 mt-[-12px] rounded bg-gray-200"></div>
+      </div>`;
+
+    const th = (t, extra) => `<th class="py-2 px-3 ${extra || "text-left"} text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-300">${t}</th>`;
+
+    return `
+      <div class="fixed inset-0 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" data-deliverymodal>
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl relative w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+          <div class="flex-shrink-0 bg-white dark:bg-gray-800 p-3 pb-0 relative">
+            <button data-deliveryclose class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all z-[1]">${icon("x", "w-5 h-5")}</button>
+          </div>
+          <div class="flex-1 min-h-0 px-2 pb-2 pt-2 md:px-4 md:pb-4 overflow-y-auto scrollbar-hide flex flex-col">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm">${icon("truck", "w-5 h-5 text-white")}</div>
+              <div>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white leading-tight">Create Delivery</h2>
+                <p class="text-xs text-gray-500">Turn existing orders into a route delivery</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-0 w-full mb-5">
+              ${step(1, "Select Orders", true)}${step(2, "Assign Staff", false)}${step(3, "Review &amp; Name", false)}
+            </div>
+
+            <div class="flex flex-col gap-3 min-h-0">
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                <div class="relative flex-1">
+                  ${icon("search", "absolute left-1 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400")}
+                  <input placeholder="Search by customer, address, or order number..." class="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
+                </div>
+                <div class="flex items-center gap-1.5 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-2.5 py-1.5 flex-shrink-0"><span class="font-semibold">${total}</span> available</div>
+              </div>
+
+              <div class="flex items-center justify-between px-1">
+                <label class="flex items-center gap-2 cursor-pointer select-none">
+                  <input type="checkbox" data-delselall ${sel.length === cands.length && cands.length ? "checked" : ""} class="w-4 h-4 accent-green-600 rounded" />
+                  <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Select all ( ${total} )</span>
+                </label>
+              </div>
+
+              <div class="border border-gray-100 rounded-xl overflow-hidden flex-1">
+                <div class="overflow-y-auto" style="max-height:260px">
+                  <table class="w-full">
+                    <thead><tr class="border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
+                      <th class="w-8 py-2 pl-4 pr-2"></th>${th("Customer Name")}${th("Address")}
+                      <th class="py-2 px-3"></th><th class="py-2 px-3"></th>
+                      ${th("Total Amount", "text-right")}
+                      <th class="py-2 pr-4 pl-2 text-center text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-300">Items</th>
+                      <th class="w-8 py-2 pr-3 pl-2"></th>
+                    </tr></thead>
+                    <tbody>
+                      ${cands.map((c, i) => `<tr data-delrow="${i}" class="cursor-pointer border-l-4 transition-colors ${sel.includes(i) ? "border-green-500 bg-green-50" : "border-transparent bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700"}">
+                        <td class="py-3 pl-4 pr-2"><input type="checkbox" data-delcheck="${i}" ${sel.includes(i) ? "checked" : ""} class="w-4 h-4 accent-green-600 rounded flex-shrink-0" /></td>
+                        <td class="py-3 px-3">
+                          <div class="flex w-full items-center gap-2 text-left">
+                            <div class="rounded-full flex-shrink-0 flex items-center justify-center font-bold ${TONE[c.tone] || TONE.blue} w-8 h-8 text-xs">${esc(c.name[0].toUpperCase())}</div>
+                            <span class="min-w-0"><span class="block truncate font-bold text-gray-900 dark:text-white">${esc(c.name)}</span></span>
+                          </div>
+                        </td>
+                        <td class="max-w-[280px] py-3 px-3 text-xs text-gray-500"><span class="line-clamp-2">${c.address ? esc(c.address) : "—"}</span></td>
+                        <td class="py-3 px-3"></td><td class="py-3 px-3"></td>
+                        <td class="py-3 px-3 text-right font-bold text-gray-900 dark:text-white">${state.currency}${getNumberTwo(c.total)}</td>
+                        <td class="py-3 pr-4 pl-2 text-center text-xs font-medium text-green-700">${c.items}</td>
+                        <td class="py-3 pr-3 pl-2 text-center"><span class="inline-flex rounded p-1 text-gray-400">${icon("chevronDown", "h-4 w-4 transition-transform")}</span></td>
+                      </tr>`).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 pt-1">
+                <button data-deliveryclose class="px-5 py-2.5 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">Cancel</button>
+                <button data-delnext ${sel.length ? "" : "disabled"} class="flex-1 py-2.5 px-5 bg-green-600 rounded-lg text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                  Assign Staff ${icon("chevronRight", "w-4 h-4")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  /* ── CreateOrderDrawer — "Create Sales Orders", empty state ───────────── */
+  function renderCreateOrderDrawer() {
+    if (!state.createOrderOpen) return "";
+    return `
+      <div class="rc-drawer is-open" data-createorderdrawer>
+        <div class="rc-drawer-mask" data-createordermask></div>
+        <div class="rc-drawer-content">
+          <button data-createorderclose class="absolute focus:outline-none z-10 text-red-500 hover:bg-red-100 hover:text-gray-700 transition-colors duration-150 bg-white shadow-md mr-6 right-0 left-auto w-10 h-10 rounded-full block text-center" style="top:1.5rem">${icon("x", "mx-auto")}</button>
+          <div class="flex flex-col w-full h-full justify-between">
+            <div class="relative w-full h-full flex flex-col bg-white dark:bg-gray-800">
+              <div class="w-full relative px-4 sm:px-6 py-3 sm:py-4 pr-16 border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-sm flex-shrink-0">
+                <div class="flex items-center gap-2 flex-1 min-w-0">
+                  ${icon("shoppingCart", "w-5 h-5 sm:w-6 sm:h-6 text-green-600 flex-shrink-0")}
+                  <div class="min-w-0">
+                    <h2 class="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">Create ${esc(state.label)}</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 truncate">Select customer and add products to create a new sales orders</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex-1 flex flex-col overflow-hidden">
+                <div class="px-4 sm:px-6 py-2 sm:py-4 flex-shrink-0 bg-gray-50 dark:bg-gray-900/50">
+                  <div class="grid gap-1.5 sm:gap-2 grid-cols-2 sm:grid-cols-1 lg:grid-cols-2">
+                    <div class="min-w-0">
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">Select Customer</label>
+                      <div class="rs-control"><span class="rs-placeholder">Select Customer</span><span class="flex items-center gap-1">${icon("chevronDown", "w-4 h-4 text-gray-400")}</span></div>
+                    </div>
+                    <div class="min-w-0">
+                      <div class="flex items-center justify-between gap-2 mb-1 sm:mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Search Products</label>
+                      </div>
+                      <div class="relative"><div class="flex gap-2"><div class="relative flex-1">
+                        ${icon("search", "absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400")}
+                        <input placeholder="Search products..." class="w-full pl-9 pr-3 h-[38px] border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+                      </div></div></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex-1 overflow-y-auto px-4 sm:px-6 py-2 sm:py-4 scrollbar-hide">
+                  <div class="h-full flex items-center justify-center">
+                    <div class="text-center max-w-md mx-auto">
+                      <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">${icon("shoppingCart", "w-10 h-10 text-gray-400 dark:text-gray-500")}</div>
+                      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Ready to Create ${esc(state.label)}</h3>
+                      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Choose a customer from the dropdown above to view their product catalog and start building sales orders.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-3 py-2 sm:p-5 shadow-lg flex-shrink-0">
+                  <div class="hidden lg:block">
+                    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <div class="flex items-center gap-3 flex-1">
+                        ${icon("messageSquare", "w-5 h-5 text-gray-400 dark:text-gray-500")}
+                        <input placeholder="E.g. Handle with care, Deliver before 5 PM..." class="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                      </div>
+                      <div class="flex items-center gap-6">
+                        <div class="text-center"><div class="text-[10px] leading-tight text-gray-500 dark:text-gray-400">Total Items</div><div class="text-sm font-bold leading-tight text-gray-900 dark:text-white">0</div></div>
+                        <div class="text-right"><div class="text-[10px] leading-tight text-gray-500 dark:text-gray-400">${esc(state.label)} Total</div><div class="text-sm font-bold leading-tight text-green-600">${state.currency}0.00</div></div>
+                        <button disabled class="flex h-12 items-center justify-center gap-2 rounded-lg bg-green-600 px-5 text-sm font-bold text-white shadow-sm transition-all hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed">
+                          ${icon("package", "h-4 w-4 flex-shrink-0")}<span class="truncate">Create ${esc(state.label)}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
   /* ── Orders.jsx — page ────────────────────────────────────────────────── */
   function renderPage() {
     const label = esc(state.label);
@@ -1089,7 +1347,8 @@
       </div>
       <div class="md:hidden h-20"></div>`;
 
-    return controls + methodTotals + body + mobileFooter + renderInsightCard();
+    return controls + methodTotals + body + mobileFooter + renderInsightCard() +
+      renderReminderModal() + renderCreateDeliveryModal() + renderCreateOrderDrawer();
   }
 
   /* ── Render + wire ────────────────────────────────────────────────────── */
@@ -1312,18 +1571,16 @@
       e.preventDefault(); e.stopPropagation();
       window.alert(`Live this opens ${name} (${lines} lines).\n\n${note}`);
     };
-    $$("[data-createdelivery]").forEach((b) => b.addEventListener("click",
-      deferred("CreateDeliveryModal", "1,256", "Deferred to a later phase — see addendum divergence D5.")));
-    $$("[data-createorder]").forEach((b) => b.addEventListener("click", (e) => {
-      state.mobileCreateMenuOpen = false;
-      deferred("CreateOrderDrawer", "4,832", "The single largest component on this route — it warrants its own scope conversation before anyone starts it.")(e);
-    }));
+    $$("[data-createdelivery]").forEach((b) =>
+      b.addEventListener("click", () => { state.deliveryOpen = true; state.mobileCreateMenuOpen = false; render(); }));
+    $$("[data-createorder]").forEach((b) =>
+      b.addEventListener("click", () => { state.createOrderOpen = true; state.mobileCreateMenuOpen = false; state.reminderOpen = false; render(); }));
     $$("[data-forecast]").forEach((b) => b.addEventListener("click",
       deferred("OrderForecastDrawer", "587", "Deferred to the reporting phase.")));
     $$("[data-demand]").forEach((b) => b.addEventListener("click",
       deferred("DemandReportDrawer", "928", "Deferred to the reporting phase.")));
-    $$("[data-reminders]").forEach((b) => b.addEventListener("click",
-      deferred("OrderReminderModal", "1,243", "Follow-up call list. Deferred to a later phase.")));
+    $$("[data-reminders]").forEach((b) =>
+      b.addEventListener("click", () => { state.reminderOpen = true; render(); }));
     $$("[data-bulkmode]").forEach((b) => b.addEventListener("click", (e) => {
       const mode = b.getAttribute("data-bulkmode");
       state.bulkMenuOpen = false; state.mobileCreateMenuOpen = false;
@@ -1370,6 +1627,54 @@
       card.addEventListener("mouseleave", () => { state.insightFor = null; render(); });
     }
 
+
+    /* ── Overlay wiring ─────────────────────────────────────────────────── */
+    $$("[data-reminderclose]").forEach((b) => b.addEventListener("click", () => { state.reminderOpen = false; render(); }));
+    const rs = $("[data-remindersearch]");
+    if (rs) rs.addEventListener("input", (e) => {
+      const v = e.target.value;
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        state.reminderSearch = v; render();
+        const again = outlet.querySelector("[data-remindersearch]");
+        if (again) { again.focus(); try { again.setSelectionRange(v.length, v.length); } catch (err) {} }
+      }, 300);
+    });
+    const rsi = $("[data-remindersince]");
+    if (rsi) rsi.addEventListener("change", () => { state.reminderSince = rsi.value; render(); });
+    const rc = $("[data-remindercatalogue]");
+    if (rc) rc.addEventListener("change", () => { state.reminderCatalogue = rc.value; render(); });
+
+    $$("[data-deliveryclose]").forEach((b) => b.addEventListener("click", () => { state.deliveryOpen = false; state.deliverySelected = []; render(); }));
+    $$("[data-delcheck]").forEach((cb) => cb.addEventListener("change", (e) => {
+      e.stopPropagation();
+      const i = Number(cb.getAttribute("data-delcheck"));
+      const k = state.deliverySelected.indexOf(i);
+      if (k > -1) state.deliverySelected.splice(k, 1); else state.deliverySelected.push(i);
+      render();
+    }));
+    $$("[data-delrow]").forEach((tr) => tr.addEventListener("click", (e) => {
+      if (e.target.matches("input")) return;
+      const i = Number(tr.getAttribute("data-delrow"));
+      const k = state.deliverySelected.indexOf(i);
+      if (k > -1) state.deliverySelected.splice(k, 1); else state.deliverySelected.push(i);
+      render();
+    }));
+    const dsa = $("[data-delselall]");
+    if (dsa) dsa.addEventListener("change", () => {
+      const n = (state.seed.deliveryCandidates || []).length;
+      state.deliverySelected = state.deliverySelected.length === n ? [] : Array.from({ length: n }, (_, i) => i);
+      render();
+    });
+    const dn = $("[data-delnext]");
+    if (dn) dn.addEventListener("click", () => {
+      if (dn.disabled) return;
+      window.alert(`Step 2 of 3 — Assign Staff.\n\n${state.deliverySelected.length} order(s) selected. The remaining wizard steps are not ported in this round.`);
+    });
+
+    $$("[data-createorderclose], [data-createordermask]").forEach((b) =>
+      b.addEventListener("click", () => { state.createOrderOpen = false; render(); }));
+
     // Tooltips (react-tooltip stand-in)
     $$("[data-tip]").forEach((el) => {
       let tip;
@@ -1400,6 +1705,10 @@
     if (opts.expand) state.expanded = [opts.expand];
     if (opts.search) { state.search = opts.search; state.searchInput = opts.search; }
     if (opts.dateOpen) state.dateOpen = true;
+    if (opts.reminderOpen) state.reminderOpen = true;
+    if (opts.deliveryOpen) state.deliveryOpen = true;
+    if (opts.deliverySelected) state.deliverySelected = opts.deliverySelected;
+    if (opts.createOrderOpen) state.createOrderOpen = true;
     if (opts.insightFor) {
       state.insightFor = opts.insightFor;
       state.insightPos = { top: 210, left: 340 };

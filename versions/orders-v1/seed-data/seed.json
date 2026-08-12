@@ -2034,5 +2034,143 @@
  "_featureComment": "Live equivalent: globalSetting.appProp.orderManagementFeatures. Every action-bar button and the allocation column are gated behind these. THESE VALUES ARE READ OFF THE REFERENCE SCREENSHOT of the QA store tenant, which shows exactly four action buttons and no allocation column. Flip any to true to see the fuller layout the code supports.",
  "_insightComment": "Fields feeding the Smart Insights hover card (generateOrderInsights in OrderTable.jsx). Live these are computed from the dispatch/delivery/return records themselves; the seed carries the derived figures directly since those record sets are a later phase.",
  "_methodTotalsComment": "Live this bar renders only when the API returns methodTotals. The reference screenshot shows none, so it is empty here and the bar does not render.",
- "_expandComment": "Fields feeding OrderFulfillmentMetadata, the panel that opens when a row is expanded. It has four tabs -- Details, Items (n), Comments, Fulfillment. Live the dispatch/delivery/return records are fetched per order; the seed carries them inline."
+ "_expandComment": "Fields feeding OrderFulfillmentMetadata, the panel that opens when a row is expanded. It has four tabs -- Details, Items (n), Comments, Fulfillment. Live the dispatch/delivery/return records are fetched per order; the seed carries them inline.",
+ "_overlayComment": "Data for the overlays captured from the live app on 2026-08-11: the Follow-up Reminders modal, the Create Delivery wizard and the Create Sales Orders drawer. Customer names and phone numbers are invented -- the live modals show real tenant customers and this prototype is published publicly.",
+ "followUpCustomers": [
+  {
+   "name": "Aarti General Store",
+   "phone": "5550501001",
+   "catalogue": "Default"
+  },
+  {
+   "name": "Ganesh Kirana Mart",
+   "phone": "5550501002",
+   "catalogue": "Catalogue 2"
+  },
+  {
+   "name": "New Bharat General Store",
+   "phone": "5550501003",
+   "catalogue": "Catalogue 2"
+  },
+  {
+   "name": "Raj Traders",
+   "phone": "5550501004",
+   "catalogue": "Catalogue 1"
+  },
+  {
+   "name": "Shivam Grocery Store",
+   "phone": "5550501005",
+   "catalogue": "Default"
+  },
+  {
+   "name": "Shree Datta Super Store",
+   "phone": "5550501006",
+   "catalogue": "Default"
+  },
+  {
+   "name": "Balaji General Store",
+   "phone": "5550501007",
+   "catalogue": "Default"
+  },
+  {
+   "name": "Krishna Kirana & General Store",
+   "phone": "5550501008",
+   "catalogue": "Default"
+  },
+  {
+   "name": "Om Sai Provision Store",
+   "phone": "5550501009",
+   "catalogue": "Default"
+  },
+  {
+   "name": "Mahalakshmi Super Mart",
+   "phone": "5550501010",
+   "catalogue": "Default"
+  }
+ ],
+ "followUpTotal": 24,
+ "catalogues": [
+  "All Catalogues",
+  "Default",
+  "Catalogue 1",
+  "Catalogue 2"
+ ],
+ "sinceOptions": [
+  "Today",
+  "Yesterday",
+  "This Week"
+ ],
+ "deliveryCandidates": [
+  {
+   "name": "Raman",
+   "address": null,
+   "total": 1652.28,
+   "items": 22,
+   "tone": "amber"
+  },
+  {
+   "name": "Rakesh",
+   "address": "Sangola, Maharashtra, 765456",
+   "total": 88,
+   "items": 2,
+   "tone": "blue"
+  },
+  {
+   "name": "Raj Traders",
+   "address": null,
+   "total": 187.2,
+   "items": 4,
+   "tone": "emerald"
+  },
+  {
+   "name": "Anand Store",
+   "address": null,
+   "total": 367.66,
+   "items": 12,
+   "tone": "violet"
+  },
+  {
+   "name": "Kiran",
+   "address": "Sangola, Maharashtra, 655676",
+   "total": 3000,
+   "items": 1,
+   "tone": "rose"
+  },
+  {
+   "name": "Naveen",
+   "address": "F-262, phase-8b, Mizoram, 160071",
+   "total": 262.5,
+   "items": 1,
+   "tone": "blue"
+  },
+  {
+   "name": "Dinesh Store",
+   "address": "Andheri East, Mumbai, 400069",
+   "total": 1204.5,
+   "items": 8,
+   "tone": "amber"
+  },
+  {
+   "name": "Rana Store",
+   "address": "Dadar West, Mumbai, 400028",
+   "total": 940.0,
+   "items": 6,
+   "tone": "emerald"
+  },
+  {
+   "name": "Suresh Kumar",
+   "address": null,
+   "total": 415.75,
+   "items": 3,
+   "tone": "violet"
+  },
+  {
+   "name": "Bharat Store",
+   "address": "Thane West, Thane, 400601",
+   "total": 2210.4,
+   "items": 15,
+   "tone": "rose"
+  }
+ ],
+ "deliveryCandidateTotal": 161
 }

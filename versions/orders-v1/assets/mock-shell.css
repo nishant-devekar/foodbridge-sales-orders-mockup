@@ -61,15 +61,17 @@
 .rc-drawer.is-open {
   pointer-events: auto;
 }
+/* Measured off the live app 2026-08-12: the mask is solid black carried at
+   element opacity 0.3, not a 50% rgba fill. */
 .rc-drawer-mask {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: #000;
   opacity: 0;
   transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .rc-drawer.is-open .rc-drawer-mask {
-  opacity: 1;
+  opacity: 0.3;
 }
 .rc-drawer-content {
   position: absolute;
